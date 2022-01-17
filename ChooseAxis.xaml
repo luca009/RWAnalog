@@ -1,0 +1,14 @@
+﻿<Window x:Class="RWAnalog.ChooseAxis"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RWAnalog"
+        mc:Ignorable="d"
+        Title="Choose Axis" Height="500" Width="600">
+    <Grid>
+        <ListBox x:Name="listboxAxes" Margin="0,0,0,20"/>
+        <Button x:Name="bOK" Content="OK" HorizontalAlignment="Right" Margin="0" VerticalAlignment="Bottom" Width="75" Click="bOK_Click"/>
+
+    </Grid>
+</Window>

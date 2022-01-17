@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="RWAnalog.AxisItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RWAnalog"
+             mc:Ignorable="d" Height="30" Width="454" Padding="5,5,5,5">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock x:Name="textLabel" HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="{Binding Label, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:AxisItem}}}" VerticalAlignment="Center"/>
+        <ProgressBar x:Name="pbarValue" Grid.Column="1" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch" Maximum="{Binding Maximum, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:AxisItem}}}" Minimum="{Binding Minimum, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:AxisItem}}}"/>
+
+    </Grid>
+</UserControl>
