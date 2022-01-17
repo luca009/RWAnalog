@@ -43,7 +43,6 @@ namespace RWAnalog
 
         [DllImport(@"E:\SteamLibrary\steamapps\common\RailWorks\plugins\RailDriver64.dll")]
         static extern void SetControllerValue(int controlID, float value);
-        //Stop changing
 
         public MainWindow()
         {

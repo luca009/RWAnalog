@@ -67,9 +67,12 @@
     <Compile Include="ChooseAxis.xaml.cs">
       <DependentUpon>ChooseAxis.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Classes\Axis.cs" />
+    <Compile Include="Classes\InputGraph.cs" />
     <Compile Include="Setup.xaml.cs">
       <DependentUpon>Setup.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Classes\Train.cs" />
     <Page Include="AxisItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

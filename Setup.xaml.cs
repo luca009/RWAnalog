@@ -23,6 +23,8 @@ namespace RWAnalog
         public int SelectedIndex = 0;
         DirectInput directInput;
         List<DeviceInstance> controllers = new List<DeviceInstance>();
+        int throttleAxisOffset = -1;
+        int brakeAxisOffset = -1;
 
         public Setup()
         {
@@ -38,18 +40,19 @@ namespace RWAnalog
             ChooseAxis chooseAxis = new ChooseAxis(controllers[SelectedIndex]);
             chooseAxis.ShowDialog();
 
-            chooseAxis.SelectedIndex;
+            throttleAxisOffset = chooseAxis.SelectedIndex;
         }
 
         private void bChangeBrakeAxis_Click(object sender, RoutedEventArgs e)
         {
+            ChooseAxis chooseAxis = new ChooseAxis(controllers[SelectedIndex]);
+            chooseAxis.ShowDialog();
 
+            brakeAxisOffset = chooseAxis.SelectedIndex;
         }
 
         private void listboxDevices_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (SelectedIndex == -1)
-                return;
             SelectedIndex = listboxDevices.SelectedIndex;
         }
 
@@ -62,6 +65,7 @@ namespace RWAnalog
         {
             listboxDevices.Items.Clear();
             controllers.Clear();
+            SelectedIndex = -1;
 
             IList<DeviceInstance> devices;
             if (scanAllDevices)

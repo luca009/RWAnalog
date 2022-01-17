@@ -25,6 +25,7 @@ namespace RWAnalog
         public double Maximum { get; set; }
         public double Value { get { return pbarValue.Value; } set { pbarValue.Value = value; } }
         public int AxisSequence { get; set; }
+        public string AxisName { get; set; }
 
         public AxisItem()
         {
