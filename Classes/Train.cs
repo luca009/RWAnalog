@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,6 +9,7 @@ namespace RWAnalog.Classes
 {
     public struct Train
     {
+
         public string Provider { get; }
         public string Product { get; }
         public string EngineName { get; }
@@ -33,9 +35,15 @@ namespace RWAnalog.Classes
 
     public struct TrainControl
     {
+        [DllImport(@"RailDriver64.dll")]
+        static extern float GetControllerValue(int controlID, int type);
+
         public string Name { get; }
         public int ControllerId { get; }
         public Axis AssociatedAxis { get; set; }
+        public float MinimumValue { get { return GetControllerValue(ControllerId, 1); } }
+        public float MaximumValue { get { return GetControllerValue(ControllerId, 2); } }
+
         private InputGraph overrideInputGraph;
         public InputGraph OverrideInputGraph {
             get

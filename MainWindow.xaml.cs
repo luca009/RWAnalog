@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows;
-
 namespace RWAnalog
 {
     /// <summary>
@@ -13,35 +12,34 @@ namespace RWAnalog
     {
         DirectInput directInput;
 
-        //Start changing here
-        [DllImport(@"E:\SteamLibrary\steamapps\common\RailWorks\plugins\RailDriver64.dll")]
+        [DllImport(@"RailDriver64.dll")]
         static extern void SetRailDriverConnected(bool isConnected);
 
-        [DllImport(@"E:\SteamLibrary\steamapps\common\RailWorks\plugins\RailDriver64.dll")]
+        [DllImport(@"RailDriver64.dll")]
         static extern bool GetRailSimConnected();
 
-        [DllImport(@"E:\SteamLibrary\steamapps\common\RailWorks\plugins\RailDriver64.dll")]
+        [DllImport(@"RailDriver64.dll")]
         static extern void SetRailSimValue(int controlID, float value);
 
-        [DllImport(@"E:\SteamLibrary\steamapps\common\RailWorks\plugins\RailDriver64.dll")]
+        [DllImport(@"RailDriver64.dll")]
         static extern float GetRailSimValue(int controlID, int type);
 
-        [DllImport(@"E:\SteamLibrary\steamapps\common\RailWorks\plugins\RailDriver64.dll")]
+        [DllImport(@"RailDriver64.dll")]
         static extern Boolean GetRailSimLocoChanged();
 
-        [DllImport(@"E:\SteamLibrary\steamapps\common\RailWorks\plugins\RailDriver64.dll")]
+        [DllImport(@"RailDriver64.dll")]
         static extern Boolean GetRailSimCombinedThrottleBrake();
 
-        [DllImport(@"E:\SteamLibrary\steamapps\common\RailWorks\plugins\RailDriver64.dll")]
+        [DllImport(@"RailDriver64.dll")]
         static extern string GetLocoName();
 
-        [DllImport(@"E:\SteamLibrary\steamapps\common\RailWorks\plugins\RailDriver64.dll")]
+        [DllImport(@"RailDriver64.dll")]
         static extern IntPtr GetControllerList();
 
-        [DllImport(@"E:\SteamLibrary\steamapps\common\RailWorks\plugins\RailDriver64.dll")]
+        [DllImport(@"RailDriver64.dll")]
         static extern float GetControllerValue(int controlID, int type);
 
-        [DllImport(@"E:\SteamLibrary\steamapps\common\RailWorks\plugins\RailDriver64.dll")]
+        [DllImport(@"RailDriver64.dll")]
         static extern void SetControllerValue(int controlID, float value);
 
         public MainWindow()

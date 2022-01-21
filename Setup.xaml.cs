@@ -1,6 +1,8 @@
-﻿using SharpDX.DirectInput;
+﻿using Microsoft.Win32;
+using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Ookii.Dialogs.Wpf;
 
 namespace RWAnalog
 {
@@ -79,6 +82,23 @@ namespace RWAnalog
                 listboxDevices.Items.Add(deviceInstance.ProductName.ToString());
                 controllers.Add(deviceInstance);
             }
+        }
+
+        private void bRaildriverPathBrowse_Click(object sender, RoutedEventArgs e)
+        {
+            VistaFolderBrowserDialog folderDialog = new VistaFolderBrowserDialog();
+
+            if (folderDialog.ShowDialog() == true)
+            {
+                tboxRaildriverPath.Text = folderDialog.SelectedPath;
+
+                Directory.SetCurrentDirectory(folderDialog.SelectedPath);
+            }
+        }
+
+        private void bOK_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

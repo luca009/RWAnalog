@@ -13,7 +13,7 @@ namespace RWAnalog.Classes
         public InputGraph()
         {
             Points.Add(new GraphPoint(0f, 0f));
-            Points.Add(new GraphPoint(1f, 1f));
+            Points.Add(new GraphPoint(65535f, 1f));
         }
 
         public float Evaluate(float x)
