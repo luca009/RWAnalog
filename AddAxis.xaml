@@ -5,15 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RWAnalog"
         mc:Ignorable="d"
-        Title="Add Axis" Height="170" Width="300" ResizeMode="CanResize" MinWidth="200" MinHeight="150">
+        Title="Add Axis" Height="210" Width="300" ResizeMode="CanResize" MinWidth="200" MinHeight="150">
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top"/>
         <TextBox x:Name="tboxName" HorizontalAlignment="Stretch" Margin="10,30,10,0" TextWrapping="Wrap" Text="Unnamed" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="10,60,0,0" TextWrapping="Wrap" Text="Axis" VerticalAlignment="Top"/>
-        <TextBox x:Name="tboxAxisName" Margin="10,80,90,0" TextWrapping="Wrap" Text="Detect or Pick" VerticalAlignment="Top" IsReadOnly="True"/>
-        <Button x:Name="bPickAxis" Content="Pick" HorizontalAlignment="Right" Margin="0,80,10,0" VerticalAlignment="Top" Width="30" Height="18"/>
-        <Button x:Name="bDetectAxis" Content="Detect" HorizontalAlignment="Right" Margin="0,80,40,0" VerticalAlignment="Top" Width="50" Height="18" Click="bDetectAxis_Click"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,60,0,0" TextWrapping="Wrap" Text="Train Control" VerticalAlignment="Top"/>
+        <TextBox x:Name="tboxControlName" Margin="10,80,90,0" TextWrapping="Wrap" Text="Detect or Pick" VerticalAlignment="Top" IsReadOnly="True"/>
+        <Button x:Name="bPickControl" Content="Pick" HorizontalAlignment="Right" Margin="0,80,10,0" VerticalAlignment="Top" Width="30" Height="18"/>
+        <Button x:Name="bDetectControl" Content="Detect" HorizontalAlignment="Right" Margin="0,80,40,0" VerticalAlignment="Top" Width="50" Height="18" Click="bDetectControl_Click"/>
         <Button x:Name="bOK" Content="OK" HorizontalAlignment="Right" Margin="0,0,5,5" VerticalAlignment="Bottom" Width="70" Click="bOK_Click"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,110,0,0" TextWrapping="Wrap" Text="Controller Axis" VerticalAlignment="Top"/>
+        <TextBox x:Name="tboxAxisName" Margin="10,130,50,0" TextWrapping="Wrap" Text="Detect or Pick" VerticalAlignment="Top" IsReadOnly="True"/>
+        <Button x:Name="bPickAxis" Content="Pick" HorizontalAlignment="Right" Margin="0,130,10,0" VerticalAlignment="Top" Width="40" Height="18" Click="bPickAxis_Click"/>
 
     </Grid>
 </Window>

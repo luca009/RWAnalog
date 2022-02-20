@@ -58,8 +58,27 @@ namespace RWAnalog
             AddAxis addAxis = new AddAxis();
             addAxis.ShowDialog();
 
+            Train train = ConfigurationManager.GetCurrentTrainWithConfiguration(); //TODO: URGENTLY change this to a different function
+            train.Controls[addAxis.TrainControl.ControllerId] = addAxis.TrainControl;
+            //ConfigurationManager.SaveTrain(train);
+
+            List<Train> temp = (List<Train>)cboxTrains.ItemsSource;
+            temp[cboxTrains.SelectedIndex] = train;
+            cboxTrains.ItemsSource = temp;
+
             ControlItem controlItem = new ControlItem(addAxis.TrainControl);
             listboxOptions.Items.Add(controlItem);
+        }
+
+        private void bOK_Click(object sender, RoutedEventArgs e)
+        {
+            if (cboxTrains.SelectedItem.GetType() != typeof(Train))
+                return;
+
+            List<Train> temp = (List<Train>)cboxTrains.ItemsSource;
+            ConfigurationManager.SaveTrain(temp[cboxTrains.SelectedIndex]);
+
+            DialogResult = true;
         }
     }
 }

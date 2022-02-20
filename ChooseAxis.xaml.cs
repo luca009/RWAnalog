@@ -98,7 +98,7 @@ namespace RWAnalog
                 return;
             if (SelectedAxisName == null)
             {
-                MessageBox.Show("Because of technical limitations, you have to move the selected Axis before clicking OK.", "Sorry!",
+                MessageBox.Show("Due to technical limitations, you have to move the selected Axis before clicking OK.", "Sorry!",
                     MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }

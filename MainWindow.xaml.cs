@@ -14,6 +14,8 @@ namespace RWAnalog
     /// </summary>
     public partial class MainWindow : Window
     {
+        InputManager inputManager;
+        ConnectionManager connectionManager;
         DirectInput directInput;
 
         [DllImport(@"RailDriver64.dll")]
@@ -53,15 +55,43 @@ namespace RWAnalog
             Setup setup = new Setup();
             setup.ShowDialog();
 
+            App.Current.Properties.Add("CurrentDevice", setup.SelectedDevice);
+            Guid controllerGuid = setup.SelectedDevice.ProductGuid;
+
             InitializeComponent();
 
+            inputManager = new InputManager(50, controllerGuid);
+            connectionManager = new ConnectionManager(50);
 
+            connectionManager.ConnectionStatusChanged += connectionManager_ConnectionStatusChanged;
+            connectionManager.TrainChanged += connectionManager_TrainChanged;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void connectionManager_ConnectionStatusChanged(ConnectionManager sender, bool connected)
         {
-            TrainConfiguration trainConfiguration = new TrainConfiguration();
-            trainConfiguration.ShowDialog();
+            if (connected)
+                SetConnectionStatus(ConnectionStatus.Connected);
+            else
+            {
+                Thread connectionThread = new Thread(() =>
+                {
+                    Dispatcher.Invoke(() => { SetConnectionStatus(ConnectionStatus.Connecting); });
+                    bool connectedTemp = TrainSimulatorManager.ConnectToTrainSimulator(120);
+
+                    if (connectedTemp)
+                        Dispatcher.Invoke(() => { SetConnectionStatus(ConnectionStatus.Connected); });
+                    else
+                        Dispatcher.Invoke(() => { SetConnectionStatus(ConnectionStatus.Failed); });
+                });
+                    
+                connectionThread.Start();
+            }
+        }
+
+        private void connectionManager_TrainChanged(ConnectionManager sender, Train train)
+        {
+            textCurrentTrain.Text = train.ToString();
+            inputManager.ChangeTrain(train);
         }
 
         private void bConnect_Click(object sender, RoutedEventArgs e)
@@ -78,6 +108,9 @@ namespace RWAnalog
             });
 
             connectionThread.Start();
+
+            inputManager.StartThread();
+            connectionManager.StartThread();
 
             //MessageBox.Show(TrainSimulatorManager.ConnectToTrainSimulator().ToString());
         }
@@ -111,6 +144,18 @@ namespace RWAnalog
                 default:
                     break;
             }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            inputManager.StopThread();
+            connectionManager.StopThread();
+        }
+
+        private void bConfigure_Click(object sender, RoutedEventArgs e)
+        {
+            TrainConfiguration trainConfiguration = new TrainConfiguration();
+            trainConfiguration.ShowDialog();
         }
     }
 }

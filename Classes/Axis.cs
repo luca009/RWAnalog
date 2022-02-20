@@ -8,12 +8,14 @@ namespace RWAnalog.Classes
 {
     public class Axis
     {
-        public string AxisName { get; }
+        public int AxisOffset { get; }
+        //public string AxisName { get; }
         public InputGraph DefaultAxisGraph { get; set; }
 
-        public Axis(string name)
+        public Axis(int offset)
         {
-            AxisName = name;
+            AxisOffset = offset;
+            //AxisName = name;
             DefaultAxisGraph = new InputGraph();
         }
     }

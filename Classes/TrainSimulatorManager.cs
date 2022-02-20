@@ -50,14 +50,14 @@ namespace RWAnalog.Classes
         [DllImport(@"RailDriver64.dll")]
         static extern void SetControllerValue(int controlID, float value);
 
-        public static bool ConnectToTrainSimulator()
+        public static bool ConnectToTrainSimulator(int secondsWait = 5)
         {
             if (GetRailSimConnected() == true)
                 return true;
 
             //retry a few times in quick succession
             //íf this fails, wait a bit longer and try again
-            for (int longWait = 0; longWait < 15; longWait++)
+            for (int longWait = 0; longWait < secondsWait * 2; longWait++)
             {
                 for (int smallWait = 0; smallWait < 5; smallWait++)
                 {
@@ -91,6 +91,11 @@ namespace RWAnalog.Classes
             string controllers = Marshal.PtrToStringAnsi(GetControllerList());
 
             return new Train(locoName, controllers);
+        }
+
+        public static string QuickGetCurrentTrain()
+        {
+            return Marshal.PtrToStringAnsi(GetLocoName());
         }
 
         public static void SetControlValue(TrainControl control, float value)

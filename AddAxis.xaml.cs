@@ -1,4 +1,5 @@
 ﻿using RWAnalog.Classes;
+using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace RWAnalog
     /// </summary>
     public partial class AddAxis : Window
     {
+        int axisOffset;
         TrainControl? internalControl = null;
         public TrainControl TrainControl { get; private set; }
 
@@ -36,16 +38,25 @@ namespace RWAnalog
                 return;
             }
 
-            TrainControl = new TrainControl(tboxName.Text, internalControl.Value.ControllerId);
+            TrainControl = new TrainControl(tboxName.Text, internalControl.Value.ControllerId) { AssociatedAxis = new Axis(axisOffset) };
             DialogResult = true;
         }
 
-        private async void bDetectAxis_Click(object sender, RoutedEventArgs e)
+        private async void bDetectControl_Click(object sender, RoutedEventArgs e)
         {
-            bDetectAxis.Content = "...";
+            bDetectControl.Content = "...";
             await Task.Run(() => { internalControl = TrainSimulatorManager.GetMovingControl(0.2f); });
-            tboxAxisName.Text = internalControl.Value.Name;
-            bDetectAxis.Content = "Detect";
+            tboxControlName.Text = internalControl.Value.Name;
+            bDetectControl.Content = "Detect";
+        }
+
+        private void bPickAxis_Click(object sender, RoutedEventArgs e)
+        {
+            ChooseAxis chooseAxis = new ChooseAxis(App.Current.Properties["CurrentDevice"] as DeviceInstance);
+            chooseAxis.ShowDialog();
+
+            tboxAxisName.Text = chooseAxis.SelectedAxisName;
+            axisOffset = chooseAxis.SelectedIndex;
         }
     }
 }

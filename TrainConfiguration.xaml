@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RWAnalog"
         mc:Ignorable="d"
-        Title="TrainConfiguration" Height="339" Width="389">
+        Title="TrainConfiguration" Height="364" Width="389">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -16,7 +16,8 @@
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Show options for:" VerticalAlignment="Top"/>
             <ComboBox x:Name="cboxTrains" Margin="0,20,0,0" VerticalAlignment="Top" SelectionChanged="cboxTrains_SelectionChanged"/>
         </Grid>
-        <ListBox x:Name="listboxOptions" Grid.Row="1" Margin="5,10,5,30"/>
-        <Button x:Name="bAddAxis" Content="Add axis" HorizontalAlignment="Right" Margin="0,0,5,10" Grid.Row="1" VerticalAlignment="Bottom" Width="80" Click="bAddAxis_Click"/>
+        <ListBox x:Name="listboxOptions" Grid.Row="1" Margin="5,10,5,50"/>
+        <Button x:Name="bAddAxis" Content="Add axis" HorizontalAlignment="Right" Margin="0,0,10,30" Grid.Row="1" VerticalAlignment="Bottom" Width="80" Click="bAddAxis_Click"/>
+        <Button x:Name="bOK" Content="OK" HorizontalAlignment="Right" Margin="0,0,5,5" Grid.Row="1" VerticalAlignment="Bottom" Width="80" Click="bOK_Click"/>
     </Grid>
 </Window>

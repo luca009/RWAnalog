@@ -24,6 +24,7 @@ namespace RWAnalog
     public partial class Setup : Window
     {
         public int SelectedIndex = 0;
+        public DeviceInstance SelectedDevice;
         DirectInput directInput;
         List<DeviceInstance> controllers = new List<DeviceInstance>();
         int throttleAxisOffset = -1;
@@ -98,6 +99,7 @@ namespace RWAnalog
 
         private void bOK_Click(object sender, RoutedEventArgs e)
         {
+            SelectedDevice = controllers[SelectedIndex];
             this.DialogResult = true;
         }
     }

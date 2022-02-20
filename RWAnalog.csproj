@@ -74,6 +74,8 @@
     <Compile Include="ChooseControl.xaml.cs">
       <DependentUpon>ChooseControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Classes\ConnectionManager.cs" />
+    <Compile Include="Classes\InputManager.cs" />
     <Compile Include="Controls\AxisItem.xaml.cs">
       <DependentUpon>AxisItem.xaml</DependentUpon>
     </Compile>

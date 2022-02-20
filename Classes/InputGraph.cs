@@ -12,6 +12,8 @@ namespace RWAnalog.Classes
 
         public InputGraph()
         {
+            Points = new List<GraphPoint>();
+
             Points.Add(new GraphPoint(0f, 0f));
             Points.Add(new GraphPoint(65535f, 1f));
         }
@@ -25,8 +27,11 @@ namespace RWAnalog.Classes
                 GraphPoint pointLow = Points[i];
                 GraphPoint pointHigh = Points[i + 1];
 
-                if (pointLow.X < x && x < pointHigh.X)
-                    return lerp(pointLow.Y, pointHigh.Y, x - pointLow.X);
+                if (pointLow.X < x && x <= pointHigh.X)
+                {
+                    float result = lerp(pointLow.Y, pointHigh.Y, (x - pointLow.X) / pointHigh.X);
+                    return result;
+                }
             }
 
             return 0f;
