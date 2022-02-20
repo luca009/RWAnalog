@@ -10,24 +10,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace RWAnalog
 {
     /// <summary>
-    /// Interaction logic for AxisItem.xaml
+    /// Interaction logic for ChooseControl.xaml
     /// </summary>
-    public partial class AxisItem : UserControl
+    public partial class ChooseControl : Window
     {
-        public string Label { get; set; }
-        public double Minimum { get; set; }
-        public double Maximum { get; set; }
-        public double Value { get { return pbarValue.Value; } set { pbarValue.Value = value; } }
-        public int AxisSequence { get; set; }
-        public string AxisName { get; set; }
-
-        public AxisItem()
+        public ChooseControl()
         {
             InitializeComponent();
         }

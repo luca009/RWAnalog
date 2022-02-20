@@ -1,0 +1,22 @@
+﻿<Window x:Class="RWAnalog.TrainConfiguration"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RWAnalog"
+        mc:Ignorable="d"
+        Title="TrainConfiguration" Height="339" Width="389">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid HorizontalAlignment="Stretch" Height="42" Margin="6,5,5,0" VerticalAlignment="Top">
+
+            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Show options for:" VerticalAlignment="Top"/>
+            <ComboBox x:Name="cboxTrains" Margin="0,20,0,0" VerticalAlignment="Top" SelectionChanged="cboxTrains_SelectionChanged"/>
+        </Grid>
+        <ListBox x:Name="listboxOptions" Grid.Row="1" Margin="5,10,5,30"/>
+        <Button x:Name="bAddAxis" Content="Add axis" HorizontalAlignment="Right" Margin="0,0,5,10" Grid.Row="1" VerticalAlignment="Bottom" Width="80" Click="bAddAxis_Click"/>
+    </Grid>
+</Window>

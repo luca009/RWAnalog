@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace RWAnalog.Classes
 {
-    public struct Train
+    public class Train
     {
-
         public string Provider { get; }
         public string Product { get; }
         public string EngineName { get; }
@@ -31,18 +30,36 @@ namespace RWAnalog.Classes
                 Controls[i] = new TrainControl(controls[i], i);
             }
         }
+
+        public override string ToString()
+        {
+            return $"{Product} by {Provider}";
+        }
+        public override bool Equals(object obj)
+        {
+            try
+            {
+                Train temp = obj as Train;
+
+                return temp.EngineName.Equals(EngineName) &&
+                    temp.Provider.Equals(Provider) &&
+                    temp.Product.Equals(Product);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 
     public struct TrainControl
     {
-        [DllImport(@"RailDriver64.dll")]
-        static extern float GetControllerValue(int controlID, int type);
-
         public string Name { get; }
         public int ControllerId { get; }
         public Axis AssociatedAxis { get; set; }
-        public float MinimumValue { get { return GetControllerValue(ControllerId, 1); } }
-        public float MaximumValue { get { return GetControllerValue(ControllerId, 2); } }
+        public float Value { get { return TrainSimulatorManager.GetControlValue(this); } }
+        public float MinimumValue { get { return TrainSimulatorManager.GetControlValue(this, ValueType.Minimum); } }
+        public float MaximumValue { get { return TrainSimulatorManager.GetControlValue(this, ValueType.Maximum); } }
 
         private InputGraph overrideInputGraph;
         public InputGraph OverrideInputGraph {

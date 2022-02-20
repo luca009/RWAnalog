@@ -1,8 +1,12 @@
-﻿using SharpDX.DirectInput;
+﻿using RWAnalog.Classes;
+using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows;
+using System.Windows.Media;
+
 namespace RWAnalog
 {
     /// <summary>
@@ -31,7 +35,7 @@ namespace RWAnalog
         static extern Boolean GetRailSimCombinedThrottleBrake();
 
         [DllImport(@"RailDriver64.dll")]
-        static extern string GetLocoName();
+        static extern IntPtr GetLocoName();
 
         [DllImport(@"RailDriver64.dll")]
         static extern IntPtr GetControllerList();
@@ -45,32 +49,68 @@ namespace RWAnalog
         public MainWindow()
         {
             directInput = new DirectInput();
-            List<DeviceInstance> controllers = new List<DeviceInstance>();
+
             Setup setup = new Setup();
-            DeviceInstance selectedController = new DeviceInstance();
-            Joystick powerLever;
-            bool trainHasNegativeThrottle = true; 
-            bool trainHasCenterBrake = false;
-            float throttleMax = 1f;
-            float brakeMax = 1f;
-            string throttleName = "ThrottleAndBrake";
-            string brakeName = "VirtualBrake";
-            bool debugMode = false;
-            /*foreach (var deviceInstance in directInput.GetDevices(DeviceType.Joystick, DeviceEnumerationFlags.AllDevices))
-            {
-                // Add each found Device to setups ListBox and to Controllers
-                setup.listboxDevices.Items.Add(deviceInstance.ProductName.ToString());
-                setup.listboxDevices.SelectedItem = setup.listboxDevices.Items[0];
-                controllers.Add(deviceInstance);
-            }*/
             setup.ShowDialog();
+
             InitializeComponent();
+
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //ChooseAxis chooseAxis = new ChooseAxis();
-            //chooseAxis.Show();
+            TrainConfiguration trainConfiguration = new TrainConfiguration();
+            trainConfiguration.ShowDialog();
+        }
+
+        private void bConnect_Click(object sender, RoutedEventArgs e)
+        {
+            Thread connectionThread = new Thread(() =>
+            {
+                Dispatcher.Invoke(() => { SetConnectionStatus(ConnectionStatus.Connecting); });
+                bool connected = TrainSimulatorManager.ConnectToTrainSimulator();
+
+                if (connected)
+                    Dispatcher.Invoke(() => { SetConnectionStatus(ConnectionStatus.Connected); });
+                else
+                    Dispatcher.Invoke(() => { SetConnectionStatus(ConnectionStatus.Failed); });
+            });
+
+            connectionThread.Start();
+
+            //MessageBox.Show(TrainSimulatorManager.ConnectToTrainSimulator().ToString());
+        }
+
+        private void SetConnectionStatus(ConnectionStatus connectionStatus)
+        {
+            switch (connectionStatus)
+            {
+                case ConnectionStatus.Failed:
+                    gridConnectionStatus.Background = new SolidColorBrush(Color.FromRgb(180, 20, 20));
+                    bConnect.Visibility = Visibility.Visible;
+                    textConnectionStatus.Text = "Could not connect";
+                    bConnect.Content = "Try again";
+                    break;
+                case ConnectionStatus.NotConnected:
+                    gridConnectionStatus.Background = new SolidColorBrush(Color.FromRgb(240, 115, 100));
+                    bConnect.Visibility = Visibility.Visible;
+                    textConnectionStatus.Text = "Disconnected from Train Simulator";
+                    bConnect.Content = "Connect";
+                    break;
+                case ConnectionStatus.Connecting:
+                    gridConnectionStatus.Background = new SolidColorBrush(Color.FromRgb(240, 190, 50));
+                    bConnect.Visibility = Visibility.Collapsed;
+                    textConnectionStatus.Text = "Connecting...";
+                    break;
+                case ConnectionStatus.Connected:
+                    gridConnectionStatus.Background = new SolidColorBrush(Color.FromRgb(70, 190, 65));
+                    bConnect.Visibility = Visibility.Collapsed;
+                    textConnectionStatus.Text = "Connected to Train Simulator";
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

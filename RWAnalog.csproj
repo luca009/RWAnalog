@@ -68,23 +68,49 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AxisItem.xaml.cs">
+    <Compile Include="AddAxis.xaml.cs">
+      <DependentUpon>AddAxis.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ChooseControl.xaml.cs">
+      <DependentUpon>ChooseControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\AxisItem.xaml.cs">
       <DependentUpon>AxisItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="ChooseAxis.xaml.cs">
       <DependentUpon>ChooseAxis.xaml</DependentUpon>
     </Compile>
     <Compile Include="Classes\Axis.cs" />
+    <Compile Include="Classes\ConfigurationManager.cs" />
     <Compile Include="Classes\InputGraph.cs" />
+    <Compile Include="Classes\TrainSimulatorManager.cs" />
+    <Compile Include="Controls\ControlItem.xaml.cs">
+      <DependentUpon>ControlItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Setup.xaml.cs">
       <DependentUpon>Setup.xaml</DependentUpon>
     </Compile>
     <Compile Include="Classes\Train.cs" />
-    <Page Include="AxisItem.xaml">
+    <Compile Include="TrainConfiguration.xaml.cs">
+      <DependentUpon>TrainConfiguration.xaml</DependentUpon>
+    </Compile>
+    <Page Include="AddAxis.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ChooseControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\AxisItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ChooseAxis.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ControlItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -101,6 +127,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Setup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TrainConfiguration.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
