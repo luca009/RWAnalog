@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 
@@ -50,13 +51,20 @@ namespace RWAnalog
 
         public MainWindow()
         {
+            App.Current.Properties.Add("ConfigPath", AppDomain.CurrentDomain.BaseDirectory + @"\config.xml");
+
             directInput = new DirectInput();
 
             Setup setup = new Setup();
-            setup.ShowDialog();
+            if (!setup.Configured)
+            {
+                setup.ShowDialog();
 
-            App.Current.Properties.Add("CurrentDevice", setup.SelectedDevice);
-            Guid controllerGuid = setup.SelectedDevice.ProductGuid;
+                App.Current.Properties.Add("CurrentDevice", setup.SelectedDevice);
+            }
+
+            Guid controllerGuid = ((DeviceInstance)App.Current.Properties["CurrentDevice"]).ProductGuid;
+            ConfigurationManager.GetSavedTrains();
 
             InitializeComponent();
 
@@ -67,24 +75,36 @@ namespace RWAnalog
             connectionManager.TrainChanged += connectionManager_TrainChanged;
         }
 
-        private void connectionManager_ConnectionStatusChanged(ConnectionManager sender, bool connected)
+        public void ChangeInputManagerTrain(Train train)
+        {
+            inputManager.ChangeTrain(train);
+        }
+
+        public Train GetInputManagerTrain()
+        {
+            return inputManager.GetTrain();
+        }
+
+        private async void connectionManager_ConnectionStatusChanged(ConnectionManager sender, bool connected)
         {
             if (connected)
+            {
+                inputManager.ChangeTrain(ConfigurationManager.GetCurrentTrainWithConfiguration());
                 SetConnectionStatus(ConnectionStatus.Connected);
+            }
             else
             {
-                Thread connectionThread = new Thread(() =>
-                {
-                    Dispatcher.Invoke(() => { SetConnectionStatus(ConnectionStatus.Connecting); });
-                    bool connectedTemp = TrainSimulatorManager.ConnectToTrainSimulator(120);
+                SetConnectionStatus(ConnectionStatus.Connecting);
+                bool connectedTemp = false;
+                await Task.Run(() => { connectedTemp = TrainSimulatorManager.ConnectToTrainSimulator(300); });
 
-                    if (connectedTemp)
-                        Dispatcher.Invoke(() => { SetConnectionStatus(ConnectionStatus.Connected); });
-                    else
-                        Dispatcher.Invoke(() => { SetConnectionStatus(ConnectionStatus.Failed); });
-                });
-                    
-                connectionThread.Start();
+                if (connectedTemp)
+                {
+                    inputManager.ChangeTrain(ConfigurationManager.GetCurrentTrainWithConfiguration());
+                    SetConnectionStatus(ConnectionStatus.Connected);
+                }
+                else
+                    SetConnectionStatus(ConnectionStatus.Failed);
             }
         }
 
@@ -94,24 +114,27 @@ namespace RWAnalog
             inputManager.ChangeTrain(train);
         }
 
-        private void bConnect_Click(object sender, RoutedEventArgs e)
+        private async void bConnect_Click(object sender, RoutedEventArgs e)
         {
-            Thread connectionThread = new Thread(() =>
+            bool connected = false;
+
+            SetConnectionStatus(ConnectionStatus.Connecting);
+            await Task.Run(() => { connected = TrainSimulatorManager.ConnectToTrainSimulator(); });
+
+            if (connected)
             {
-                Dispatcher.Invoke(() => { SetConnectionStatus(ConnectionStatus.Connecting); });
-                bool connected = TrainSimulatorManager.ConnectToTrainSimulator();
+                inputManager.ChangeTrain(ConfigurationManager.GetCurrentTrainWithConfiguration());
+                SetConnectionStatus(ConnectionStatus.Connected);
 
-                if (connected)
-                    Dispatcher.Invoke(() => { SetConnectionStatus(ConnectionStatus.Connected); });
-                else
-                    Dispatcher.Invoke(() => { SetConnectionStatus(ConnectionStatus.Failed); });
-            });
+                inputManager.StartThread();
+                //inputManager.ChangeTrain(ConfigurationManager.GetCurrentTrainWithConfiguration());
+                connectionManager.StartThread();
+            }
+            else
+                SetConnectionStatus(ConnectionStatus.Failed);
 
-            connectionThread.Start();
-
-            inputManager.StartThread();
-            connectionManager.StartThread();
-
+            //connectionThread.Start();
+            //connectionThread.Join();
             //MessageBox.Show(TrainSimulatorManager.ConnectToTrainSimulator().ToString());
         }
 
@@ -121,14 +144,16 @@ namespace RWAnalog
             {
                 case ConnectionStatus.Failed:
                     gridConnectionStatus.Background = new SolidColorBrush(Color.FromRgb(180, 20, 20));
-                    bConnect.Visibility = Visibility.Visible;
                     textConnectionStatus.Text = "Could not connect";
+                    textCurrentTrain.Text = "no train";
+                    bConnect.Visibility = Visibility.Visible;
                     bConnect.Content = "Try again";
                     break;
                 case ConnectionStatus.NotConnected:
                     gridConnectionStatus.Background = new SolidColorBrush(Color.FromRgb(240, 115, 100));
-                    bConnect.Visibility = Visibility.Visible;
                     textConnectionStatus.Text = "Disconnected from Train Simulator";
+                    textCurrentTrain.Text = "no train";
+                    bConnect.Visibility = Visibility.Visible;
                     bConnect.Content = "Connect";
                     break;
                 case ConnectionStatus.Connecting:
@@ -138,8 +163,8 @@ namespace RWAnalog
                     break;
                 case ConnectionStatus.Connected:
                     gridConnectionStatus.Background = new SolidColorBrush(Color.FromRgb(70, 190, 65));
-                    bConnect.Visibility = Visibility.Collapsed;
                     textConnectionStatus.Text = "Connected to Train Simulator";
+                    bConnect.Visibility = Visibility.Collapsed;
                     break;
                 default:
                     break;
@@ -148,8 +173,20 @@ namespace RWAnalog
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            string path = App.Current.Properties["ConfigPath"].ToString();
+            List<Train> savedTrains = (List<Train>)App.Current.Properties["SavedTrains"];
+            GeneralConfiguration configuration = (GeneralConfiguration)App.Current.Properties["Configuration"];
+
+            SaveLoadManager.Save(path, savedTrains, configuration);
+
             inputManager.StopThread();
             connectionManager.StopThread();
+
+            Thread.Sleep(1000); //wait a second for threads to close down gracefully, then force quit
+
+            inputManager.ForceStopThread();
+            connectionManager.ForceStopThread();
+            Application.Current.Shutdown();
         }
 
         private void bConfigure_Click(object sender, RoutedEventArgs e)

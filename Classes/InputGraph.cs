@@ -10,9 +10,12 @@ namespace RWAnalog.Classes
     {
         public List<GraphPoint> Points { get; set; }
 
-        public InputGraph()
+        public InputGraph(bool initializePoints = true)
         {
             Points = new List<GraphPoint>();
+
+            if (!initializePoints)
+                return;
 
             Points.Add(new GraphPoint(0f, 0f));
             Points.Add(new GraphPoint(65535f, 1f));

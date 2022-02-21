@@ -15,6 +15,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Ookii.Dialogs.Wpf;
+using RWAnalog.Classes;
+using Path = System.IO.Path;
 
 namespace RWAnalog
 {
@@ -23,6 +25,7 @@ namespace RWAnalog
     /// </summary>
     public partial class Setup : Window
     {
+        public bool Configured = false;
         public int SelectedIndex = 0;
         public DeviceInstance SelectedDevice;
         DirectInput directInput;
@@ -32,10 +35,28 @@ namespace RWAnalog
 
         public Setup()
         {
-            InitializeComponent();
-
             directInput = new DirectInput();
 
+            GeneralConfiguration? configuration = SaveLoadManager.LoadConfiguration(App.Current.Properties["ConfigPath"].ToString());
+            if (configuration != null && File.Exists(Path.Combine(configuration.Value.PluginsPath, "RailDriver64.dll")))
+            {
+                Directory.SetCurrentDirectory(configuration.Value.PluginsPath);
+
+                IList<DeviceInstance> devices = directInput.GetDevices();
+
+                foreach (var deviceInstance in devices)
+                {
+                    if (deviceInstance.ProductGuid == configuration.Value.SelectedDevice)
+                    {
+                        App.Current.Properties.Add("CurrentDevice", deviceInstance);
+                        App.Current.Properties.Add("Configuration", configuration);
+                        Configured = true;
+                        return;
+                    }
+                }
+            }
+
+            InitializeComponent();
             ScanDevices();
         }
 
@@ -91,6 +112,12 @@ namespace RWAnalog
 
             if (folderDialog.ShowDialog() == true)
             {
+                if (!File.Exists(Path.Combine(folderDialog.SelectedPath, "RailDriver64.dll")))
+                {
+                    MessageBox.Show("This path does not contain the required files.\nTry again, and if this persists, validate Train Simulator's files.");
+                    return;
+                }
+
                 tboxRaildriverPath.Text = folderDialog.SelectedPath;
 
                 Directory.SetCurrentDirectory(folderDialog.SelectedPath);
@@ -99,7 +126,19 @@ namespace RWAnalog
 
         private void bOK_Click(object sender, RoutedEventArgs e)
         {
+            if (!File.Exists(Path.Combine(tboxRaildriverPath.Text, "RailDriver64.dll")))
+            {
+                MessageBox.Show("The selected path does not contain the required files.\nTry again, and if this persists, validate Train Simulator's files.");
+                return;
+            }
+
             SelectedDevice = controllers[SelectedIndex];
+
+            GeneralConfiguration configuration = new GeneralConfiguration();
+            configuration.PluginsPath = tboxRaildriverPath.Text;
+            configuration.SelectedDevice = SelectedDevice.ProductGuid;
+            App.Current.Properties.Add("Configuration", configuration);
+
             this.DialogResult = true;
         }
     }

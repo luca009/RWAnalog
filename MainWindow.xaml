@@ -5,15 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RWAnalog"
         mc:Ignorable="d"
-        Title="RWAnalog" Height="450" Width="800" Closing="Window_Closing">
+        Title="RWAnalog" Height="110" Width="600" Closing="Window_Closing" MinHeight="110" MaxHeight="110" MinWidth="500">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid x:Name="gridConnectionStatus" Grid.RowSpan="1" Background="#FFF07364">
-            <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5,0,5">
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,6,0,6">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>

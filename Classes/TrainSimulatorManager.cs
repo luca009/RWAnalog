@@ -10,7 +10,7 @@ namespace RWAnalog.Classes
 {
     public enum ConnectionStatus
     {
-        NotConnected, Connecting, Connected, Failed
+        NotConnected, Connecting, Connected, Failed, RestartScenario
     }
 
     public enum ValueType
@@ -52,9 +52,6 @@ namespace RWAnalog.Classes
 
         public static bool ConnectToTrainSimulator(int secondsWait = 5)
         {
-            if (GetRailSimConnected() == true)
-                return true;
-
             //retry a few times in quick succession
             //íf this fails, wait a bit longer and try again
             for (int longWait = 0; longWait < secondsWait * 2; longWait++)

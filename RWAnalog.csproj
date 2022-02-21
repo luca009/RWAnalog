@@ -76,6 +76,7 @@
     </Compile>
     <Compile Include="Classes\ConnectionManager.cs" />
     <Compile Include="Classes\InputManager.cs" />
+    <Compile Include="Classes\SaveLoadManager.cs" />
     <Compile Include="Controls\AxisItem.xaml.cs">
       <DependentUpon>AxisItem.xaml</DependentUpon>
     </Compile>

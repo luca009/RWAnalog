@@ -13,6 +13,7 @@ namespace RWAnalog.Classes
         public string Product { get; }
         public string EngineName { get; }
         public TrainControl[] Controls { get; set; }
+        public bool UnsavedChanges { get; set; }
 
         public Train(string locoNameString, string controlsString)
         {
@@ -31,10 +32,27 @@ namespace RWAnalog.Classes
             }
         }
 
+        public string ToSingleString()
+        {
+            return $"{Provider}.:.{Product}.:.{EngineName}";
+        }
+
+        public string ToSingleControlsString()
+        {
+            string returnString = "";
+            foreach (TrainControl control in Controls)
+            {
+                returnString += control.ControllerId;
+                returnString += "::";
+            }
+            return returnString;
+        }
+
         public override string ToString()
         {
             return $"{Product} by {Provider}";
         }
+
         public override bool Equals(object obj)
         {
             try

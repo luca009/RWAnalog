@@ -26,7 +26,7 @@ namespace RWAnalog
             InitializeComponent();
             cboxTrains.ItemsSource = ConfigurationManager.GetSavedTrains();
 
-            Train currentTrain = TrainSimulatorManager.GetCurrentTrain();
+            Train currentTrain = ConfigurationManager.GetCurrentTrain();
             for (int i = 0; i < cboxTrains.Items.Count; i++)
             {
                 if (!cboxTrains.Items[i].Equals(currentTrain))
@@ -58,13 +58,24 @@ namespace RWAnalog
             AddAxis addAxis = new AddAxis();
             addAxis.ShowDialog();
 
-            Train train = ConfigurationManager.GetCurrentTrainWithConfiguration(); //TODO: URGENTLY change this to a different function
+            List<Train> cboxList = (List<Train>)cboxTrains.ItemsSource;
+            Train train = cboxTrains.SelectedItem as Train;
+            List<Train> savedTrains = ConfigurationManager.GetSavedTrains();
+            foreach (Train savedTrain in savedTrains)
+            {
+                if (savedTrain.ToSingleString().Equals(cboxTrains.SelectedItem))
+                {
+                    train = savedTrain;
+                }
+            }
+
             train.Controls[addAxis.TrainControl.ControllerId] = addAxis.TrainControl;
             //ConfigurationManager.SaveTrain(train);
 
-            List<Train> temp = (List<Train>)cboxTrains.ItemsSource;
-            temp[cboxTrains.SelectedIndex] = train;
-            cboxTrains.ItemsSource = temp;
+            cboxList[cboxTrains.SelectedIndex] = train;
+            cboxTrains.ItemsSource = cboxList;
+
+            train.UnsavedChanges = true;
 
             ControlItem controlItem = new ControlItem(addAxis.TrainControl);
             listboxOptions.Items.Add(controlItem);
@@ -75,8 +86,19 @@ namespace RWAnalog
             if (cboxTrains.SelectedItem.GetType() != typeof(Train))
                 return;
 
-            List<Train> temp = (List<Train>)cboxTrains.ItemsSource;
-            ConfigurationManager.SaveTrain(temp[cboxTrains.SelectedIndex]);
+            Train currentTrain = ((MainWindow)App.Current.MainWindow).GetInputManagerTrain();
+            List<Train> temp = cboxTrains.ItemsSource as List<Train>;
+            for (int i = 0; i < temp.Count; i++)
+            {
+                Train train = temp[i];
+                if (!train.UnsavedChanges)
+                    continue;
+
+                ConfigurationManager.SaveTrain(train);
+
+                if (train.ToSingleString() == TrainSimulatorManager.QuickGetCurrentTrain())
+                    ((MainWindow)App.Current.MainWindow).ChangeInputManagerTrain(train);
+            }
 
             DialogResult = true;
         }

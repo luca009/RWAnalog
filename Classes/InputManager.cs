@@ -12,6 +12,7 @@ namespace RWAnalog.Classes
     {
         Train train;
         Thread thread;
+        int pollWait;
         bool threadRunning = false;
         DirectInput directInput;
         Guid deviceGuid;
@@ -20,6 +21,7 @@ namespace RWAnalog.Classes
         public InputManager(int pollWait, Guid deviceGuid)
         {
             this.deviceGuid = deviceGuid;
+            this.pollWait = pollWait;
 
             thread = new Thread(() =>
             {
@@ -43,7 +45,29 @@ namespace RWAnalog.Classes
                 return;
 
             threadRunning = true;
-            thread.Start();
+
+            try
+            {
+                thread.Start();
+            }
+            catch (Exception)
+            {
+                thread = new Thread(() =>
+                {
+                    directInput = new DirectInput();
+                    joystick = new Joystick(directInput, deviceGuid);
+
+                    joystick.Properties.BufferSize = 128;
+                    joystick.Acquire();
+
+                    while (threadRunning)
+                    {
+                        Update();
+                        Thread.Sleep(pollWait);
+                    }
+                });
+                thread.Start();
+            }
         }
 
         public void StopThread()
@@ -51,9 +75,25 @@ namespace RWAnalog.Classes
             threadRunning = false;
         }
 
+        public void ForceStopThread()
+        {
+            threadRunning = false;
+            thread.Abort();
+        }
+
+        public bool ThreadRunning()
+        {
+            return threadRunning;
+        }
+
         public void ChangeTrain(Train train)
         {
             this.train = train;
+        }
+
+        public Train GetTrain()
+        {
+            return this.train;
         }
 
         public void Update()
