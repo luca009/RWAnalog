@@ -125,5 +125,37 @@ namespace RWAnalog
 
             DialogResult = true;
         }
+
+        private void bEditAxis_Click(object sender, RoutedEventArgs e)
+        {
+            if (listboxOptions.SelectedItem == null || listboxOptions.SelectedItem.GetType() != typeof(ControlItem))
+                return;
+
+            List<Train> cboxList = (List<Train>)cboxTrains.ItemsSource;
+            Train train = cboxTrains.SelectedItem as Train;
+            List<Train> savedTrains = ConfigurationManager.GetSavedTrains();
+            foreach (Train savedTrain in savedTrains)
+            {
+                if (savedTrain.ToSingleString().Equals(cboxTrains.SelectedItem))
+                {
+                    train = savedTrain;
+                }
+            }
+
+            ControlItem controlItem = (ControlItem)listboxOptions.SelectedItem;
+
+            AddAxis addAxis = new AddAxis();
+            addAxis.ShowEditDialog(train.Controls[controlItem.Control.ControllerId]);
+
+            train.Controls[addAxis.TrainControl.ControllerId] = addAxis.TrainControl;
+
+            cboxList[cboxTrains.SelectedIndex] = train;
+            cboxTrains.ItemsSource = cboxList;
+
+            train.UnsavedChanges = true;
+
+            listboxOptions.Items.Remove(controlItem);
+            listboxOptions.Items.Add(new ControlItem(addAxis.TrainControl));
+        }
     }
 }

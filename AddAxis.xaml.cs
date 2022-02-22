@@ -32,6 +32,16 @@ namespace RWAnalog
             InitializeComponent();
         }
 
+        public bool? ShowEditDialog(TrainControl control)
+        {
+            internalControl = control;
+            axisOffset = control.AssociatedAxis.AxisOffset;
+            tboxAxisName.Text = "same as before";
+            tboxControlName.Text = "same as before";
+            tboxName.Text = control.Name;
+            return this.ShowDialog();
+        }
+
         private void bOK_Click(object sender, RoutedEventArgs e)
         {
             if (internalControl == null)
@@ -70,9 +80,18 @@ namespace RWAnalog
             }
 
             TrainControl control = new TrainControl(tboxName.Text, internalControl.Value.ControllerId) { AssociatedAxis = new Axis(axisOffset) };
-            control.OverrideInputGraph = new InputGraph(false);
-            control.OverrideInputGraph.Points.Add(new GraphPoint(0, control.MinimumValue));
-            control.OverrideInputGraph.Points.Add(new GraphPoint(65535, control.MaximumValue));
+
+            try
+            {
+                control.OverrideInputGraph = internalControl.Value.OverrideInputGraph;
+            }
+            catch (Exception)
+            {
+                control.OverrideInputGraph = new InputGraph(false);
+                control.OverrideInputGraph.Points.Add(new GraphPoint(0, control.MinimumValue));
+                control.OverrideInputGraph.Points.Add(new GraphPoint(65535, control.MaximumValue));
+            }
+
             GraphDialog graphDialog = new GraphDialog(control.OverrideInputGraph);
 
             bool threadRunning = false;

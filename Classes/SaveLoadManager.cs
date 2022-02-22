@@ -171,6 +171,7 @@ namespace RWAnalog.Classes
                                     currentTrain.Controls[control.ControllerId] = control;
                                 }
                                 trainList.Add(currentTrain);
+                                controls.Clear();
                                 break;
                             case "Control":
                                 controls.Add(currentTrainControl);

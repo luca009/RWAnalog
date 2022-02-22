@@ -192,5 +192,13 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\connected.wav" />
+    <Resource Include="Resources\connection_lost.wav" />
+    <Resource Include="Resources\reconnecting.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\new_train.wav" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

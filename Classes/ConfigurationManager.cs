@@ -78,5 +78,23 @@ namespace RWAnalog.Classes
             catch (Exception) { } //ignore if it can't find the train saved
             return newTrain;
         }
+
+        public static bool IsCurrentTrainNew()
+        {
+            Train train = TrainSimulatorManager.GetCurrentTrain();
+            if (train == null || ((List<Train>)App.Current.Properties["SavedTrains"]) == null)
+                return true;
+
+            try
+            {
+                ((List<Train>)App.Current.Properties["SavedTrains"]).First((x) => { return x.ToString() == train.ToString(); });
+            }
+            catch (Exception)
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

@@ -2,11 +2,14 @@
 using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Media;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Resources;
 
 namespace RWAnalog
 {
@@ -89,6 +92,12 @@ namespace RWAnalog
         {
             if (connected)
             {
+                if (ConfigurationManager.IsCurrentTrainNew())
+                {
+                    SetConnectionStatus(ConnectionStatus.NewTrain);
+                    return;
+                }
+
                 inputManager.ChangeTrain(ConfigurationManager.GetCurrentTrainWithConfiguration());
                 SetConnectionStatus(ConnectionStatus.Connected);
             }
@@ -123,6 +132,12 @@ namespace RWAnalog
 
             if (connected)
             {
+                if (ConfigurationManager.IsCurrentTrainNew())
+                {
+                    SetConnectionStatus(ConnectionStatus.NewTrain);
+                    return;
+                }
+
                 inputManager.ChangeTrain(ConfigurationManager.GetCurrentTrainWithConfiguration());
                 SetConnectionStatus(ConnectionStatus.Connected);
 
@@ -140,6 +155,7 @@ namespace RWAnalog
 
         private void SetConnectionStatus(ConnectionStatus connectionStatus)
         {
+            StreamResourceInfo stream = null;
             switch (connectionStatus)
             {
                 case ConnectionStatus.Failed:
@@ -148,6 +164,8 @@ namespace RWAnalog
                     textCurrentTrain.Text = "no train";
                     bConnect.Visibility = Visibility.Visible;
                     bConnect.Content = "Try again";
+                    bConfigure.Visibility = Visibility.Collapsed;
+                    stream = Application.GetResourceStream(new Uri("pack://application:,,,/RWAnalog;component/Resources/connection_lost.wav"));
                     break;
                 case ConnectionStatus.NotConnected:
                     gridConnectionStatus.Background = new SolidColorBrush(Color.FromRgb(240, 115, 100));
@@ -155,20 +173,39 @@ namespace RWAnalog
                     textCurrentTrain.Text = "no train";
                     bConnect.Visibility = Visibility.Visible;
                     bConnect.Content = "Connect";
+                    bConfigure.Visibility = Visibility.Collapsed;
                     break;
                 case ConnectionStatus.Connecting:
                     gridConnectionStatus.Background = new SolidColorBrush(Color.FromRgb(240, 190, 50));
                     bConnect.Visibility = Visibility.Collapsed;
                     textConnectionStatus.Text = "Connecting...";
+                    bConfigure.Visibility = Visibility.Collapsed;
+                    stream = Application.GetResourceStream(new Uri("pack://application:,,,/RWAnalog;component/Resources/reconnecting.wav"));
+                    break;
+                case ConnectionStatus.NewTrain:
+                    gridConnectionStatus.Background = new SolidColorBrush(Color.FromRgb(240, 190, 50));
+                    bConnect.Visibility = Visibility.Collapsed;
+                    textConnectionStatus.Text = "New vehicle! Configure now.";
+                    bConfigure.Visibility = Visibility.Visible;
+                    stream = Application.GetResourceStream(new Uri("pack://application:,,,/RWAnalog;component/Resources/new_train.wav"));
                     break;
                 case ConnectionStatus.Connected:
                     gridConnectionStatus.Background = new SolidColorBrush(Color.FromRgb(70, 190, 65));
                     textConnectionStatus.Text = "Connected to Train Simulator";
                     bConnect.Visibility = Visibility.Collapsed;
+                    bConfigure.Visibility = Visibility.Visible;
+                    stream = Application.GetResourceStream(new Uri("pack://application:,,,/RWAnalog;component/Resources/connected.wav"));
                     break;
                 default:
                     break;
             }
+
+            if (stream == null) return;
+
+            SoundPlayer player = new SoundPlayer(stream.Stream);
+            player.Load();
+            player.Play();
+            player.Dispose();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -195,6 +232,7 @@ namespace RWAnalog
             TrainConfiguration trainConfiguration = new TrainConfiguration();
             trainConfiguration.ShowDialog();
             inputManager.StartThread();
+            TrainSimulatorManager.ConnectToTrainSimulator();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

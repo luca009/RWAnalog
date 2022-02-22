@@ -76,7 +76,8 @@ namespace RWAnalog.Classes
 
         public void StopThread()
         {
-            joystick.Unacquire();
+            if (joystick != null)
+                joystick.Unacquire();
             threadRunning = false;
         }
 

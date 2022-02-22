@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RWAnalog"
         mc:Ignorable="d"
-        Title="RWAnalog" Height="110" Width="600" Closing="Window_Closing" MinHeight="110" MaxHeight="110" MinWidth="500">
+        Title="RWAnalog" Height="110" Width="600" Closing="Window_Closing" MinHeight="110" MaxHeight="110" MinWidth="400">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -28,7 +28,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock x:Name="textCurrentTrain" HorizontalAlignment="Center" Margin="5,5,5,5" Grid.Row="1" TextWrapping="Wrap" Text="no train" VerticalAlignment="Center" FontSize="16"/>
-                <Button x:Name="bConfigure" Content="Configuration" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Grid.Column="1" Width="80" Click="bConfigure_Click"/>
+                <Button x:Name="bConfigure" Content="Configuration" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Grid.Column="1" Width="80" Click="bConfigure_Click" Visibility="Collapsed"/>
             </Grid>
         </Grid>
 

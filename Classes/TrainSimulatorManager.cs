@@ -10,7 +10,7 @@ namespace RWAnalog.Classes
 {
     public enum ConnectionStatus
     {
-        NotConnected, Connecting, Connected, Failed, RestartScenario
+        NotConnected, Connecting, Connected, Failed, NewTrain
     }
 
     public enum ValueType
@@ -121,7 +121,6 @@ namespace RWAnalog.Classes
             string controllers = Marshal.PtrToStringAnsi(GetControllerList());
             return controllers.Split(new string[] { "::" }, StringSplitOptions.None);
         }
-
         public static TrainControl GetMovingControl(float tolerance)
         {
             //save all current values as reference, to detect which ones have changed

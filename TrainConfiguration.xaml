@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RWAnalog"
         mc:Ignorable="d"
-        Title="TrainConfiguration" Height="364" Width="389">
+        Title="TrainConfiguration" Height="400" Width="390" MinWidth="340" MinHeight="200">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -19,6 +19,8 @@
         <ListBox x:Name="listboxOptions" Grid.Row="1" Margin="5,10,5,50"/>
         <Button x:Name="bAddAxis" Content="Add axis" HorizontalAlignment="Right" Margin="0,0,10,30" Grid.Row="1" VerticalAlignment="Bottom" Width="80" Click="bAddAxis_Click"/>
         <Button x:Name="bOK" Content="OK" HorizontalAlignment="Right" Margin="0,0,5,5" Grid.Row="1" VerticalAlignment="Bottom" Width="80" Click="bOK_Click"/>
-        <Button x:Name="bRemoveAxis" Content="Remove axis" HorizontalAlignment="Right" Margin="0,0,90,30" Grid.Row="1" VerticalAlignment="Bottom" Width="80" Click="bRemoveAxis_Click"/>
+        <Button x:Name="bRemoveAxis" Content="Remove axis" HorizontalAlignment="Right" Margin="0,0,170,30" Grid.Row="1" VerticalAlignment="Bottom" Width="80" Click="bRemoveAxis_Click"/>
+        <Button x:Name="bEditAxis" Content="Edit axis" HorizontalAlignment="Right" Margin="0,0,90,30" Grid.Row="1" VerticalAlignment="Bottom" Width="80" Click="bEditAxis_Click"/>
+        <TextBlock HorizontalAlignment="Left" Margin="5,0,0,7" Grid.Row="1" TextWrapping="Wrap" Text="Controls are inactive when this dialog is open." VerticalAlignment="Bottom"/>
     </Grid>
 </Window>
