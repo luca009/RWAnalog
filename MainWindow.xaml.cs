@@ -191,8 +191,21 @@ namespace RWAnalog
 
         private void bConfigure_Click(object sender, RoutedEventArgs e)
         {
+            inputManager.StopThread();
             TrainConfiguration trainConfiguration = new TrainConfiguration();
             trainConfiguration.ShowDialog();
+            inputManager.StartThread();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            InputGraph graph = new InputGraph();
+            graph.Points.Add(new GraphPoint(5000, -1f));
+            GraphDialog graphDialog = new GraphDialog(graph);
+            graphDialog.Show();
+            graphDialog.Hide();
+            graphDialog.UpdateCanvas();
+            graphDialog.ShowDialog();
         }
     }
 }

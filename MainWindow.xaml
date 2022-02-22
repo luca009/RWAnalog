@@ -31,7 +31,7 @@
                 <Button x:Name="bConfigure" Content="Configuration" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Grid.Column="1" Width="80" Click="bConfigure_Click"/>
             </Grid>
         </Grid>
-        
+
 
     </Grid>
 </Window>

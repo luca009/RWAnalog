@@ -46,6 +46,11 @@
       <HintPath>packages\SharpDX.DirectInput.4.2.0\lib\net45\SharpDX.DirectInput.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Collections.Specialized, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Collections.Specialized.4.3.0\lib\net46\System.Collections.Specialized.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
@@ -75,6 +80,7 @@
       <DependentUpon>ChooseControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Classes\ConnectionManager.cs" />
+    <Compile Include="Classes\DynamicLine.cs" />
     <Compile Include="Classes\InputManager.cs" />
     <Compile Include="Classes\SaveLoadManager.cs" />
     <Compile Include="Controls\AxisItem.xaml.cs">
@@ -89,6 +95,15 @@
     <Compile Include="Classes\TrainSimulatorManager.cs" />
     <Compile Include="Controls\ControlItem.xaml.cs">
       <DependentUpon>ControlItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\GraphEditor.xaml.cs">
+      <DependentUpon>GraphEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PointControl.xaml.cs">
+      <DependentUpon>PointControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GraphDialog.xaml.cs">
+      <DependentUpon>GraphDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Setup.xaml.cs">
       <DependentUpon>Setup.xaml</DependentUpon>
@@ -114,6 +129,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ControlItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\GraphEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PointControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GraphDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

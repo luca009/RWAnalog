@@ -1,0 +1,16 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RWAnalog"
+        xmlns:Controls="clr-namespace:RWAnalog.Controls" x:Class="RWAnalog.GraphDialog"
+        mc:Ignorable="d"
+        Title="GraphDialog" Height="475" Width="520">
+    <Grid>
+
+        <Controls:GraphEditor x:Name="graphEditor" HorizontalAlignment="Center" Margin="0,5,0,0" VerticalAlignment="Top" Background="Gainsboro" Width="500" Height="400" Maximum="1" Minimum="-1"/>
+        <Button x:Name="bOK" Content="OK" HorizontalAlignment="Right" Margin="0,0,5,5" VerticalAlignment="Bottom" Width="80" Click="bOK_Click"/>
+
+    </Grid>
+</Window>

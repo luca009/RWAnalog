@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,6 +25,7 @@ namespace RWAnalog
         int axisOffset;
         TrainControl? internalControl = null;
         public TrainControl TrainControl { get; private set; }
+        public InputGraph InputGraph { get; private set; }
 
         public AddAxis()
         {
@@ -38,7 +40,7 @@ namespace RWAnalog
                 return;
             }
 
-            TrainControl = new TrainControl(tboxName.Text, internalControl.Value.ControllerId) { AssociatedAxis = new Axis(axisOffset) };
+            TrainControl = new TrainControl(tboxName.Text, internalControl.Value.ControllerId) { AssociatedAxis = new Axis(axisOffset), OverrideInputGraph = InputGraph };
             DialogResult = true;
         }
 
@@ -57,6 +59,66 @@ namespace RWAnalog
 
             tboxAxisName.Text = chooseAxis.SelectedAxisName;
             axisOffset = chooseAxis.SelectedIndex;
+        }
+
+        private void bEditGraph_Click(object sender, RoutedEventArgs e)
+        {
+            if (internalControl == null)
+            {
+                MessageBox.Show("Select train control first.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            TrainControl control = new TrainControl(tboxName.Text, internalControl.Value.ControllerId) { AssociatedAxis = new Axis(axisOffset) };
+            control.OverrideInputGraph = new InputGraph(false);
+            control.OverrideInputGraph.Points.Add(new GraphPoint(0, control.MinimumValue));
+            control.OverrideInputGraph.Points.Add(new GraphPoint(65535, control.MaximumValue));
+            GraphDialog graphDialog = new GraphDialog(control.OverrideInputGraph);
+
+            bool threadRunning = false;
+            GeneralConfiguration configuration = (GeneralConfiguration)App.Current.Properties["Configuration"];
+            Guid deviceGuid = configuration.SelectedDevice;
+            Thread inputThread = new Thread(() =>
+            {
+                DirectInput directInput = new DirectInput();
+                Joystick joystick = new Joystick(directInput, deviceGuid);
+
+                joystick.Properties.BufferSize = 128;
+                joystick.Acquire();
+
+                while (threadRunning)
+                {
+                    joystick.Poll();
+                    var data = joystick.GetBufferedData();
+
+                    for (int i = 0; i < data.Length; i++)
+                    {
+                        if (data[i].RawOffset != axisOffset)
+                            continue;
+
+                        Dispatcher.Invoke(() => { graphDialog.SetControllerValue(data[i].Value); });
+                        break;
+                    }
+
+                    Thread.Sleep(100);
+                }
+
+                joystick.Unacquire();
+                joystick.Dispose();
+                directInput.Dispose();
+            });
+
+            threadRunning = true;
+            inputThread.Start();
+
+            graphDialog.Minimum = control.MinimumValue;
+            graphDialog.Maximum = control.MaximumValue;
+            graphDialog.SetPoints(control.OverrideInputGraph);
+            graphDialog.ShowDialog();
+            threadRunning = false;
+
+            InputGraph = new InputGraph(false);
+            InputGraph.Points.AddRange(graphDialog.Points);
         }
     }
 }

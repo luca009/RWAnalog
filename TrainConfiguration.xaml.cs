@@ -81,6 +81,29 @@ namespace RWAnalog
             listboxOptions.Items.Add(controlItem);
         }
 
+        private void bRemoveAxis_Click(object sender, RoutedEventArgs e)
+        {
+            if (listboxOptions.SelectedItem == null || listboxOptions.SelectedItem.GetType() != typeof(ControlItem))
+                return;
+
+            Train train = cboxTrains.SelectedItem as Train;
+            List<Train> savedTrains = ConfigurationManager.GetSavedTrains();
+            foreach (Train savedTrain in savedTrains)
+            {
+                if (savedTrain.ToSingleString().Equals(cboxTrains.SelectedItem))
+                {
+                    train = savedTrain;
+                }
+            }
+
+            ControlItem controlItem = (ControlItem)listboxOptions.SelectedItem;
+
+            train.Controls[controlItem.Control.ControllerId] = new TrainControl("", controlItem.Control.ControllerId);
+            train.UnsavedChanges = true;
+
+            listboxOptions.Items.Remove(controlItem);
+        }
+
         private void bOK_Click(object sender, RoutedEventArgs e)
         {
             if (cboxTrains.SelectedItem.GetType() != typeof(Train))

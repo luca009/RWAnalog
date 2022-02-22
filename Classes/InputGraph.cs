@@ -30,9 +30,9 @@ namespace RWAnalog.Classes
                 GraphPoint pointLow = Points[i];
                 GraphPoint pointHigh = Points[i + 1];
 
-                if (pointLow.X < x && x <= pointHigh.X)
+                if (pointLow.X <= x && x <= pointHigh.X)
                 {
-                    float result = lerp(pointLow.Y, pointHigh.Y, (x - pointLow.X) / pointHigh.X);
+                    float result = lerp(pointLow.Y, pointHigh.Y, (x - pointLow.X) / (pointHigh.X - pointLow.X));
                     return result;
                 }
             }

@@ -36,6 +36,10 @@ namespace RWAnalog.Classes
                     Update();
                     Thread.Sleep(pollWait);
                 }
+
+                joystick.Unacquire();
+                joystick.Dispose();
+                directInput.Dispose();
             });
         }
 
@@ -72,6 +76,7 @@ namespace RWAnalog.Classes
 
         public void StopThread()
         {
+            joystick.Unacquire();
             threadRunning = false;
         }
 
