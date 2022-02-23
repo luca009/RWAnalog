@@ -15,7 +15,7 @@
         <Button x:Name="bDetectControl" Content="Detect" HorizontalAlignment="Right" Margin="0,80,40,0" VerticalAlignment="Top" Width="50" Height="18" Click="bDetectControl_Click"/>
         <Button x:Name="bOK" Content="OK" HorizontalAlignment="Right" Margin="0,0,5,5" VerticalAlignment="Bottom" Width="70" Click="bOK_Click"/>
         <TextBlock HorizontalAlignment="Left" Margin="10,110,0,0" TextWrapping="Wrap" Text="Controller Axis" VerticalAlignment="Top"/>
-        <TextBox x:Name="tboxAxisName" Margin="10,130,50,0" TextWrapping="Wrap" Text="Detect or Pick" VerticalAlignment="Top" IsReadOnly="True"/>
+        <TextBox x:Name="tboxAxisName" Margin="10,130,50,0" TextWrapping="Wrap" Text="Pick" VerticalAlignment="Top" IsReadOnly="True"/>
         <Button x:Name="bPickAxis" Content="Pick" HorizontalAlignment="Right" Margin="0,130,10,0" VerticalAlignment="Top" Width="40" Height="18" Click="bPickAxis_Click"/>
         <TextBlock HorizontalAlignment="Left" Margin="10,165,0,0" TextWrapping="Wrap" Text="Sensitivity Graph" VerticalAlignment="Top"/>
         <Button x:Name="bEditGraph" Content="Edit Graph" HorizontalAlignment="Right" Margin="0,163,10,0" VerticalAlignment="Top" Width="100" Click="bEditGraph_Click"/>
