@@ -10,7 +10,7 @@ namespace RWAnalog.Classes
 {
     public enum ConnectionStatus
     {
-        NotConnected, Connecting, Connected, Failed, NewTrain
+        NotConnected, Connecting, Connected, Reconnecting, Failed, NewTrain
     }
 
     public enum ValueType

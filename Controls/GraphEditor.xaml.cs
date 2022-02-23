@@ -91,7 +91,10 @@ namespace RWAnalog.Controls
                 PointControl pointControl = new PointControl() { Width = ellipseRadius, Height = ellipseRadius };
 
                 if (points[i].X == 0 || points[i].X == 65535)
+                {
                     pointControl.LockX = true;
+                    pointControl.LockDelete = true;
+                }
 
                 pointControl.CanvasWidth = width;
                 pointControl.CanvasHeight = height;
@@ -100,6 +103,7 @@ namespace RWAnalog.Controls
                 Canvas.SetBottom(pointControl, pos.Y - ellipseRadius / 2);
 
                 pointControl.UpdatePosition += point_UpdatePosition;
+                pointControl.Delete += point_Delete;
 
                 //if (i > 0)
                 //{
@@ -279,9 +283,6 @@ namespace RWAnalog.Controls
             Point pos = GetPositionOnCanvas(min, max, point);
             PointControl pointControl = new PointControl() { Width = ellipseRadius, Height = ellipseRadius };
 
-            if (point.X == 0 || point.X == 65535)
-                pointControl.LockX = true;
-
             pointControl.CanvasWidth = CanvasWidth;
             pointControl.CanvasHeight = CanvasHeight;
             canvasGraphContent.Children.Add(pointControl);
@@ -289,6 +290,16 @@ namespace RWAnalog.Controls
             Canvas.SetBottom(pointControl, pos.Y - ellipseRadius / 2);
 
             pointControl.UpdatePosition += point_UpdatePosition;
+            pointControl.Delete += point_Delete;
+        }
+
+        private void point_Delete(PointControl sender)
+        {
+            int index = canvasGraphContent.Children.IndexOf(sender);
+            if (index < 0)
+                return;
+
+            canvasGraphContent.Children.RemoveAt(index);
         }
     }
 }

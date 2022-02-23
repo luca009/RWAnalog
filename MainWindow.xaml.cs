@@ -103,7 +103,7 @@ namespace RWAnalog
             }
             else
             {
-                SetConnectionStatus(ConnectionStatus.Connecting);
+                SetConnectionStatus(ConnectionStatus.Reconnecting);
                 bool connectedTemp = false;
                 await Task.Run(() => { connectedTemp = TrainSimulatorManager.ConnectToTrainSimulator(300); });
 
@@ -135,6 +135,7 @@ namespace RWAnalog
                 if (ConfigurationManager.IsCurrentTrainNew())
                 {
                     SetConnectionStatus(ConnectionStatus.NewTrain);
+                    connectionManager.StartThread();
                     return;
                 }
 
@@ -179,6 +180,12 @@ namespace RWAnalog
                     gridConnectionStatus.Background = new SolidColorBrush(Color.FromRgb(240, 190, 50));
                     bConnect.Visibility = Visibility.Collapsed;
                     textConnectionStatus.Text = "Connecting...";
+                    bConfigure.Visibility = Visibility.Collapsed;
+                    break;
+                case ConnectionStatus.Reconnecting:
+                    gridConnectionStatus.Background = new SolidColorBrush(Color.FromRgb(240, 190, 50));
+                    bConnect.Visibility = Visibility.Collapsed;
+                    textConnectionStatus.Text = "Reconnecting...";
                     bConfigure.Visibility = Visibility.Collapsed;
                     stream = Application.GetResourceStream(new Uri("pack://application:,,,/RWAnalog;component/Resources/reconnecting.wav"));
                     break;

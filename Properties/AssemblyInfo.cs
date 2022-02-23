@@ -8,9 +8,9 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("RWAnalog")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Analog input for DTG RailWorks/Train Simulator")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("luca009")]
 [assembly: AssemblyProduct("RWAnalog")]
 [assembly: AssemblyCopyright("Copyright ©  2021")]
 [assembly: AssemblyTrademark("")]

@@ -16,7 +16,7 @@
             </TransformGroup>
         </Grid.RenderTransform>
 
-        <Ellipse HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="Black" Stroke="#FF292929" MouseLeftButtonDown="Ellipse_MouseLeftButtonDown" MouseLeftButtonUp="Ellipse_MouseLeftButtonUp" MouseMove="Ellipse_MouseMove"/>
+        <Ellipse HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="Black" Stroke="#FF292929" MouseLeftButtonDown="Ellipse_MouseLeftButtonDown" MouseLeftButtonUp="Ellipse_MouseLeftButtonUp" MouseMove="Ellipse_MouseMove" MouseRightButtonUp="Ellipse_MouseRightButtonUp"/>
 
     </Grid>
 </UserControl>

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RWAnalog"
         mc:Ignorable="d"
-        Title="TrainConfiguration" Height="400" Width="390" MinWidth="340" MinHeight="200">
+        Title="Train Configuration" Height="400" Width="390" MinWidth="350" MinHeight="200">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

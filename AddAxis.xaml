@@ -11,7 +11,7 @@
         <TextBox x:Name="tboxName" HorizontalAlignment="Stretch" Margin="10,30,10,0" TextWrapping="Wrap" Text="Unnamed" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="10,60,0,0" TextWrapping="Wrap" Text="Train Control" VerticalAlignment="Top"/>
         <TextBox x:Name="tboxControlName" Margin="10,80,90,0" TextWrapping="Wrap" Text="Detect or Pick" VerticalAlignment="Top" IsReadOnly="True"/>
-        <Button x:Name="bPickControl" Content="Pick" HorizontalAlignment="Right" Margin="0,80,10,0" VerticalAlignment="Top" Width="30" Height="18"/>
+        <Button x:Name="bPickControl" Content="Pick" HorizontalAlignment="Right" Margin="0,80,10,0" VerticalAlignment="Top" Width="30" Height="18" Click="bPickControl_Click"/>
         <Button x:Name="bDetectControl" Content="Detect" HorizontalAlignment="Right" Margin="0,80,40,0" VerticalAlignment="Top" Width="50" Height="18" Click="bDetectControl_Click"/>
         <Button x:Name="bOK" Content="OK" HorizontalAlignment="Right" Margin="0,0,5,5" VerticalAlignment="Bottom" Width="70" Click="bOK_Click"/>
         <TextBlock HorizontalAlignment="Left" Margin="10,110,0,0" TextWrapping="Wrap" Text="Controller Axis" VerticalAlignment="Top"/>

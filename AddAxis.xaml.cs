@@ -62,6 +62,14 @@ namespace RWAnalog
             bDetectControl.Content = "Detect";
         }
 
+        private void bPickControl_Click(object sender, RoutedEventArgs e)
+        {
+            ChooseControl chooseControl = new ChooseControl();
+            chooseControl.ShowDialog();
+            internalControl = new TrainControl(chooseControl.SelectedName, chooseControl.SelectedIndex);
+            tboxControlName.Text = chooseControl.SelectedName;
+        }
+
         private void bPickAxis_Click(object sender, RoutedEventArgs e)
         {
             ChooseAxis chooseAxis = new ChooseAxis(App.Current.Properties["CurrentDevice"] as DeviceInstance);

@@ -22,7 +22,10 @@ namespace RWAnalog.Controls
     {
         public delegate void UpdatePositionDelegate(PointControl sender, double x, double y, Point oldPoint);
         public event UpdatePositionDelegate UpdatePosition;
+        public delegate void DeleteDelegate(PointControl sender);
+        public event DeleteDelegate Delete;
         public bool LockX { get; set; }
+        public bool LockDelete { get; set; }
         public double CanvasWidth { get; set; }
         public double CanvasHeight { get; set; }
         public Point Point {
@@ -90,6 +93,12 @@ namespace RWAnalog.Controls
             if (x > max)
                 return max;
             return x;
+        }
+
+        private void Ellipse_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (Delete != null && !LockDelete)
+                Delete(this);
         }
     }
 }
