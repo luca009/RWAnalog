@@ -20,23 +20,12 @@ namespace RWAnalog.Classes
 
     public static class TrainSimulatorManager
     {
+#if WIN64
         [DllImport(@"RailDriver64.dll")]
         static extern void SetRailDriverConnected(bool isConnected);
 
         [DllImport(@"RailDriver64.dll")]
         static extern bool GetRailSimConnected();
-
-        [DllImport(@"RailDriver64.dll")]
-        static extern void SetRailSimValue(int controlID, float value);
-
-        [DllImport(@"RailDriver64.dll")]
-        static extern float GetRailSimValue(int controlID, int type);
-
-        [DllImport(@"RailDriver64.dll")]
-        static extern Boolean GetRailSimLocoChanged();
-
-        [DllImport(@"RailDriver64.dll")]
-        static extern Boolean GetRailSimCombinedThrottleBrake();
 
         [DllImport(@"RailDriver64.dll")]
         static extern IntPtr GetLocoName();
@@ -49,6 +38,25 @@ namespace RWAnalog.Classes
 
         [DllImport(@"RailDriver64.dll")]
         static extern void SetControllerValue(int controlID, float value);
+#else
+        [DllImport(@"RailDriver.dll")]
+        static extern void SetRailDriverConnected(bool isConnected);
+
+        [DllImport(@"RailDriver.dll")]
+        static extern bool GetRailSimConnected();
+
+        [DllImport(@"RailDriver.dll")]
+        static extern IntPtr GetLocoName();
+
+        [DllImport(@"RailDriver.dll")]
+        static extern IntPtr GetControllerList();
+
+        [DllImport(@"RailDriver.dll")]
+        static extern float GetControllerValue(int controlID, int type);
+
+        [DllImport(@"RailDriver.dll")]
+        static extern void SetControllerValue(int controlID, float value);
+#endif
 
         public static bool ConnectToTrainSimulator(int secondsWait = 5)
         {

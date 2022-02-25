@@ -22,36 +22,6 @@ namespace RWAnalog
         ConnectionManager connectionManager;
         DirectInput directInput;
 
-        [DllImport(@"RailDriver64.dll")]
-        static extern void SetRailDriverConnected(bool isConnected);
-
-        [DllImport(@"RailDriver64.dll")]
-        static extern bool GetRailSimConnected();
-
-        [DllImport(@"RailDriver64.dll")]
-        static extern void SetRailSimValue(int controlID, float value);
-
-        [DllImport(@"RailDriver64.dll")]
-        static extern float GetRailSimValue(int controlID, int type);
-
-        [DllImport(@"RailDriver64.dll")]
-        static extern Boolean GetRailSimLocoChanged();
-
-        [DllImport(@"RailDriver64.dll")]
-        static extern Boolean GetRailSimCombinedThrottleBrake();
-
-        [DllImport(@"RailDriver64.dll")]
-        static extern IntPtr GetLocoName();
-
-        [DllImport(@"RailDriver64.dll")]
-        static extern IntPtr GetControllerList();
-
-        [DllImport(@"RailDriver64.dll")]
-        static extern float GetControllerValue(int controlID, int type);
-
-        [DllImport(@"RailDriver64.dll")]
-        static extern void SetControllerValue(int controlID, float value);
-
         public MainWindow()
         {
             App.Current.Properties.Add("ConfigPath", AppDomain.CurrentDomain.BaseDirectory + @"\config.xml");
