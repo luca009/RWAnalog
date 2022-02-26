@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RWAnalog"
         mc:Ignorable="d"
-        Title="Browse" Height="400" Width="200" ResizeMode="NoResize">
+        Title="Browse" Height="400" Width="200" ResizeMode="NoResize" Topmost="True">
     <Grid>
         <ListBox x:Name="lboxList" Margin="0,0,0,20"/>
         <Button x:Name="bOK" Content="OK" HorizontalAlignment="Right" Margin="0" VerticalAlignment="Bottom" Width="80" Click="bOK_Click" IsDefault="True"/>

@@ -46,9 +46,9 @@ namespace RWAnalog
             graphEditor.UpdateCanvas();
         }
 
-        public void SetControllerValue(float value)
+        public void SetControllerValue(float controllerValue, float trainControlValue = -1)
         {
-            graphEditor.SetControllerValue(value);
+            graphEditor.SetControllerValue(controllerValue, trainControlValue);
         }
 
         private void bOK_Click(object sender, RoutedEventArgs e)

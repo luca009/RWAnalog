@@ -124,6 +124,22 @@ namespace RWAnalog.Classes
             }
         }
 
+        public static float GetControlValue(int controllerId, ValueType type = ValueType.Current)
+        {
+            switch (type)
+            {
+                default:
+                case ValueType.Current:
+                    return GetControllerValue(controllerId, 0);
+
+                case ValueType.Minimum:
+                    return GetControllerValue(controllerId, 1);
+
+                case ValueType.Maximum:
+                    return GetControllerValue(controllerId, 2);
+            }
+        }
+
         public static string[] GetActiveControllers()
         {
             string controllers = Marshal.PtrToStringAnsi(GetControllerList());

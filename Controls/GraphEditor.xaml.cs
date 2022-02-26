@@ -34,6 +34,8 @@ namespace RWAnalog.Controls
                 return Math.Abs(Minimum - Maximum);
             }
         }
+        float controllerValue = -1;
+        float trainControlValue = -1;
         Point min;
         Point max;
         double ellipseRadius = 10;
@@ -60,9 +62,23 @@ namespace RWAnalog.Controls
             //canvasTranslateTransform.Y = -(CanvasHeight / Range);
         }
 
-        public void SetControllerValue(float value)
+        public void SetControllerValue(float controllerValue, float trainControlValue = -1)
         {
-            gridControllerValue.Margin = new Thickness(GetPositionOnCanvas(new Point(0, 0), new Point(65535, 0), new GraphPoint(value, 0)).X, 0, 0, 0);
+            this.controllerValue = controllerValue;
+            this.trainControlValue = trainControlValue;
+
+            gridControllerValue.Margin = new Thickness(GetPositionOnCanvas(new Point(0, 0), new Point(65535, 0),
+                                                        new GraphPoint(controllerValue, 0)).X, 0, 0, 0);
+
+            if (trainControlValue < 0)
+            {
+                gridTrainControlValue.Visibility = Visibility.Collapsed;
+                return;
+            }
+
+            gridTrainControlValue.Visibility = Visibility.Visible;
+            gridTrainControlValue.Margin = new Thickness(0, 0, 0, GetPositionOnCanvas(new Point(0, Minimum), new Point(65535, Maximum),
+                                                        new GraphPoint(0, trainControlValue)).Y);
         }
 
         public void SetPoints(List<GraphPoint> points, double width, double height)
@@ -105,25 +121,11 @@ namespace RWAnalog.Controls
                 pointControl.UpdatePosition += point_UpdatePosition;
                 pointControl.Delete += point_Delete;
 
-                //if (i > 0)
-                //{
-                //    Line connectingLine = new Line() {
-                //        Stroke = new SolidColorBrush(Color.FromRgb(30, 30, 30)),
-                //        StrokeThickness = 2
-                //    };
-                //    previousControl.AssociatedLines.Add(connectingLine);
-                //    pointControl.AssociatedLines.Add(connectingLine);
-                //    connectingLine.RecalculateConnection(point1: previousPos, point2: pos, height: CanvasHeight);
-                //    canvasGraphContent.Children.Add(connectingLine);
-                //}
-
                 previousPos = pos;
                 previousControl = pointControl;
             }
 
             gridHorizontalZero.Margin = new Thickness(0, 0, 0, GetPositionOnCanvas(min, max, new GraphPoint(0, 0)).Y);
-
-            //DebugRun();
         }
 
         public List<GraphPoint> GetPoints()
@@ -143,66 +145,10 @@ namespace RWAnalog.Controls
         {
             Canvas.SetLeft(sender, x);
             Canvas.SetBottom(sender, y);
-
-            //if (lineTaskRunning)
-            //    return;
-
-            //lineTaskRunning = true;
-
-            //List<int> removeIndexes = new List<int>();
-            //for (int i = 0; i < canvasGraphContent.Children.Count; i++)
-            //{
-            //    if (canvasGraphContent.Children[i].GetType() != typeof(Line)) continue;
-
-            //    removeIndexes.Add(i);
-            //}
-
-            //for (int i = 0; i < removeIndexes.Count; i++)
-            //{
-            //    try
-            //    {
-            //        canvasGraphContent.Children.RemoveAt(i);
-            //    }
-            //    catch (Exception) { }
-            //}
-
-            //for (int i = 0; i < points.Count; i++)
-            //{
-            //    if (i > 0)
-            //    {
-            //        Line connectingLine = new Line()
-            //        {
-            //            Stroke = new SolidColorBrush(Color.FromRgb(30, 30, 30)),
-            //            StrokeThickness = 2
-            //        };
-            //        connectingLine.RecalculateConnection(point1: points[i - 1], point2: points[i], height: CanvasHeight);
-            //        canvasGraphContent.Children.Add(connectingLine);
-            //    }
-            //}
-
-            //lineTaskRunning = false;
         }
 
         private Point GetPositionOnCanvas(Point min, Point max, GraphPoint point)
         {
-            //Cast to 0-1 range
-            //double rangeX = Math.Abs(min.X - max.X);
-            //double rangeY = Math.Abs(min.Y - max.Y);
-
-            //min.X /= rangeX;
-            //min.X *= 2;
-            //min.Y /= rangeY;
-            //min.Y *= 2;
-            //output.X = point.X / rangeX + min.X;
-            //output.Y = point.Y / rangeY + min.Y;
-
-            ////Cast to canvas range
-            //double newMin = Minimum;
-            //newMin /= 2 + Minimum;
-            //newMin *= height;
-
-            //output.X *= width;
-            //output.Y *= (point.Y * height - newMin) / 2;
             //Convert to 0-1 scale
             double x = (point.X) * (1 / (max.X));
             double y = (point.Y) * (1 / (max.Y));
@@ -214,8 +160,6 @@ namespace RWAnalog.Controls
 
             x *= CanvasWidth;
             y = LinearRemap(y, 0, max.Y, originY, CanvasHeight);
-
-            //y *= CanvasHeight;
 
             return new Point(x, y);
         }
@@ -229,44 +173,6 @@ namespace RWAnalog.Controls
 
             point.Y = LinearRemap(point.Y, originY, CanvasHeight, 0, graphMax.Y);
 
-            //point.Y = LinearRemap(point.Y, Minimum, Maximum, graphMin.Y, graphMax.Y);
-
-            //float x;
-            //float y;
-
-            ////Cast to 0-1 range
-            //graphMin.Y /= height;
-            //graphMin.Y *= 2;
-
-            //point.X /= width;
-            //point.Y = point.Y / height + graphMin.Y;
-
-            ////Cast to graph range
-            //double rangeX = Math.Abs(graphMin.X - graphMax.X);
-            //double rangeY = Math.Abs(graphMin.Y - graphMax.Y);
-
-            //graphMin.X /= 2;
-            //graphMin.X *= rangeX;
-            //graphMin.Y /= 2;
-            //graphMin.Y *= rangeY;
-            //x = (float)(point.X * rangeX - graphMin.X);
-            //y = (float)(point.Y * rangeY - graphMin.Y);
-
-            //point.X /= width;
-            //point.Y /= height;
-
-
-            //double graphRangeY = Math.Abs(graphMin.Y - graphMax.Y);
-
-            //point.Y = LinearRemap(point.Y, 0, Maximum, graphMin.Y, graphMax.Y);
-            //point.Y = point.Y / 2 + (rangeY / 2);
-
-            //point.X = point.X * (1 / graphMax.X);
-            //point.Y = point.Y * (1 / graphMax.Y);
-
-            //point.X /= CanvasWidth;
-            //point.Y /= CanvasHeight;
-
             return new GraphPoint((float)(point.X / CanvasWidth * 65535), (float)point.Y);
         }
 
@@ -277,7 +183,7 @@ namespace RWAnalog.Controls
 
         private void bAddPoint_Click(object sender, RoutedEventArgs e)
         {
-            GraphPoint point = new GraphPoint(32768, 0.5f);
+            GraphPoint point = new GraphPoint(controllerValue, trainControlValue);
             points.Add(point);
 
             Point pos = GetPositionOnCanvas(min, max, point);

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:RWAnalog"
         xmlns:Controls="clr-namespace:RWAnalog.Controls" x:Class="RWAnalog.GraphDialog"
         mc:Ignorable="d"
-        Title="Graph Editor" Height="480" Width="530" ResizeMode="NoResize">
+        Title="Graph Editor" Height="480" Width="530" ResizeMode="NoResize" Topmost="True">
     <Grid>
 
         <Controls:GraphEditor x:Name="graphEditor" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" Background="Gainsboro" Width="500" Height="400" Maximum="1" Minimum="-1"/>

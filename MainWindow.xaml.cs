@@ -102,26 +102,13 @@ namespace RWAnalog
 
             if (connected)
             {
-                if (ConfigurationManager.IsCurrentTrainNew())
-                {
-                    SetConnectionStatus(ConnectionStatus.NewTrain);
-                    connectionManager.StartThread();
-                    return;
-                }
-
                 inputManager.ChangeTrain(ConfigurationManager.GetCurrentTrainWithConfiguration());
-                SetConnectionStatus(ConnectionStatus.Connected);
 
                 inputManager.StartThread();
-                //inputManager.ChangeTrain(ConfigurationManager.GetCurrentTrainWithConfiguration());
                 connectionManager.StartThread();
             }
             else
                 SetConnectionStatus(ConnectionStatus.Failed);
-
-            //connectionThread.Start();
-            //connectionThread.Join();
-            //MessageBox.Show(TrainSimulatorManager.ConnectToTrainSimulator().ToString());
         }
 
         private void SetConnectionStatus(ConnectionStatus connectionStatus)

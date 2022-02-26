@@ -89,20 +89,32 @@ namespace RWAnalog
 
             TrainControl control = new TrainControl(tboxName.Text, internalControl.Value.ControllerId) { AssociatedAxis = new Axis(axisOffset) };
 
-            try
+            if (InputGraph == null)
             {
-                control.OverrideInputGraph = internalControl.Value.OverrideInputGraph;
+                try
+                {
+                    control.OverrideInputGraph = internalControl.Value.OverrideInputGraph;
+                }
+                catch (Exception)
+                {
+                    control.OverrideInputGraph = new InputGraph(false);
+                    control.OverrideInputGraph.Points.Add(new GraphPoint(0, control.MinimumValue));
+                    control.OverrideInputGraph.Points.Add(new GraphPoint(65535, control.MaximumValue));
+                }
             }
-            catch (Exception)
+            else
             {
-                control.OverrideInputGraph = new InputGraph(false);
-                control.OverrideInputGraph.Points.Add(new GraphPoint(0, control.MinimumValue));
-                control.OverrideInputGraph.Points.Add(new GraphPoint(65535, control.MaximumValue));
+                control.OverrideInputGraph = InputGraph;
             }
 
             GraphDialog graphDialog = new GraphDialog(control.OverrideInputGraph);
 
             bool threadRunning = false;
+            bool connectedToTS = TrainSimulatorManager.ConnectedToTrainSimulator();
+            int currentControlId = -1;
+            if (connectedToTS)
+                currentControlId = internalControl.Value.ControllerId;
+
             GeneralConfiguration configuration = (GeneralConfiguration)App.Current.Properties["Configuration"];
             Guid deviceGuid = configuration.SelectedDevice;
             Thread inputThread = new Thread(() =>
@@ -113,6 +125,7 @@ namespace RWAnalog
                 joystick.Properties.BufferSize = 128;
                 joystick.Acquire();
 
+                int controllerValue = 0;
                 while (threadRunning)
                 {
                     joystick.Poll();
@@ -123,11 +136,18 @@ namespace RWAnalog
                         if (data[i].RawOffset != axisOffset)
                             continue;
 
-                        Dispatcher.Invoke(() => { graphDialog.SetControllerValue(data[i].Value); });
+                        controllerValue = data[i].Value;
                         break;
                     }
 
-                    Thread.Sleep(100);
+                    if (connectedToTS)
+                        Dispatcher.Invoke(() => {
+                            graphDialog.SetControllerValue(controllerValue, TrainSimulatorManager.GetControlValue(currentControlId));
+                        });
+                    else
+                        Dispatcher.Invoke(() => { graphDialog.SetControllerValue(controllerValue); });
+
+                    Thread.Sleep(50);
                 }
 
                 joystick.Unacquire();

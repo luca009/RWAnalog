@@ -17,8 +17,38 @@
         </Grid.ColumnDefinitions>
         <Canvas x:Name="canvasGraphContent" Grid.Column="1" Background="#FFECECEC" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="-2" />
         <Grid x:Name="gridHorizontalZero" Grid.Column="1" VerticalAlignment="Bottom" Background="#FFABABAB" Height="1" Panel.ZIndex="-1" />
-        <Grid x:Name="gridControllerValue" Grid.Column="1" VerticalAlignment="Stretch" Background="#FF585858" Width="0.5" HorizontalAlignment="Left" Panel.ZIndex="-1" />
-        <Button x:Name="bAddPoint" Grid.Column="1" Content="Add Point" HorizontalAlignment="Right" Margin="0,5,10,0" Grid.Row="1" VerticalAlignment="Top" Height="20" Width="80" Click="bAddPoint_Click" Panel.ZIndex="11"/>
+        <Grid x:Name="gridTrainControlValue" Grid.Column="1" VerticalAlignment="Bottom" Background="Red" Height="1" Panel.ZIndex="-1" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5" >
+            <Grid.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform Y="0.5"/>
+                </TransformGroup>
+            </Grid.RenderTransform>
+        </Grid>
+        <Grid x:Name="gridControllerValue" Grid.Column="1" VerticalAlignment="Stretch" Background="Red" Width="1" HorizontalAlignment="Left" Panel.ZIndex="-1" RenderTransformOrigin="0.5,0.5" >
+            <Grid.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform X="-0.5"/>
+                </TransformGroup>
+            </Grid.RenderTransform>
+        </Grid>
+        <Button x:Name="bAddPoint" Grid.Column="1" Content="Add Point" HorizontalAlignment="Right" Margin="0,20,10,0" Grid.Row="1" VerticalAlignment="Top" Height="20" Width="80" Click="bAddPoint_Click" Panel.ZIndex="11"/>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Center" Margin="0,5,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Controller Value" VerticalAlignment="Top" FontSize="14"/>
+        <TextBlock HorizontalAlignment="Left" Margin="-25,0,0,0" TextWrapping="Wrap" Text="Train Control Value" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="2" FontSize="14">
+            <TextBlock.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </TextBlock.RenderTransform>
+        </TextBlock>
 
     </Grid>
 </UserControl>

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RWAnalog"
         mc:Ignorable="d"
-        Title="Add Axis" Height="260" Width="300" ResizeMode="CanResize" MinWidth="200" MinHeight="150">
+        Title="Add Axis" Height="260" Width="300" ResizeMode="CanResize" MinWidth="200" MinHeight="150" Topmost="True">
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top"/>
         <TextBox x:Name="tboxName" HorizontalAlignment="Stretch" Margin="10,30,10,0" TextWrapping="Wrap" Text="Unnamed" VerticalAlignment="Top"/>
