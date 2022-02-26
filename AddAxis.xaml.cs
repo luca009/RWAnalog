@@ -57,7 +57,7 @@ namespace RWAnalog
         private async void bDetectControl_Click(object sender, RoutedEventArgs e)
         {
             bDetectControl.Content = "...";
-            await Task.Run(() => { internalControl = TrainSimulatorManager.GetMovingControl(0.2f); });
+            await Task.Run(() => { internalControl = TrainSimulatorManager.GetMovingControl(0.25f); });
             tboxControlName.Text = internalControl.Value.Name;
             bDetectControl.Content = "Detect";
         }

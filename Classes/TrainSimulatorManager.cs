@@ -129,15 +129,18 @@ namespace RWAnalog.Classes
             string controllers = Marshal.PtrToStringAnsi(GetControllerList());
             return controllers.Split(new string[] { "::" }, StringSplitOptions.None);
         }
+
         public static TrainControl GetMovingControl(float tolerance)
         {
             //save all current values as reference, to detect which ones have changed
             string[] controllers = GetActiveControllers();
-            float[] referenceValues = new float[controllers.Length];
+            float[,] referenceValues = new float[controllers.Length, 3];
 
             for (int i = 0; i < controllers.Length; i++)
             {
-                referenceValues[i] = GetControllerValue(i, 0);
+                referenceValues[i, 0] = GetControllerValue(i, 0);
+                referenceValues[i, 1] = GetControllerValue(i, 1);
+                referenceValues[i, 2] = GetControllerValue(i, 2);
             }
 
             Dictionary<int, float> changedControllersWithDifference = new Dictionary<int, float>();
@@ -147,11 +150,11 @@ namespace RWAnalog.Classes
                 //detect changes within the tolerance, save items with a high enough one
                 for (int i = 0; i < controllers.Length; i++)
                 {
-                    if (Math.Abs(referenceValues[i] - GetControllerValue(i, 0)) < tolerance)
+                    if (EvaluateControl(referenceValues, i, GetControllerValue(i, 0)) < tolerance)
                         continue;
 
                     changesFound = true;
-                    changedControllersWithDifference.Add(i, Math.Abs(referenceValues[i] - GetControllerValue(i, 0)));
+                    changedControllersWithDifference.Add(i, EvaluateControl(referenceValues, i, GetControllerValue(i, 0)));
                 }
 
                 System.Threading.Thread.Sleep(100);
@@ -162,6 +165,18 @@ namespace RWAnalog.Classes
             int index = sortedDict.First().Key;
             TrainControl control = new TrainControl(controllers[index], index);
             return control;
+        }
+
+        private static float EvaluateControl(float[,] referenceValues, int index, float currentValue)
+        {
+            float oldPercent = LinearRemap(referenceValues[index, 0], referenceValues[index, 1], referenceValues[index, 2], 0f, 1f);
+            float newPercent = LinearRemap(currentValue, referenceValues[index, 1], referenceValues[index, 2], 0f, 1f);
+            return Math.Abs(oldPercent - newPercent);
+        }
+
+        private static float LinearRemap(float value, float originMin, float originMax, float resultMin, float resultMax)
+        {
+            return (value - originMin) * (resultMax - resultMin) / (originMax - originMin) + resultMin;
         }
     }
 }
