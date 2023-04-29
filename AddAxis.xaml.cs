@@ -1,4 +1,4 @@
-using RWAnalog.Classes;
+﻿using RWAnalog.Classes;
 using SharpDX.DirectInput;
 using System;
 using System.Runtime.InteropServices;
@@ -15,7 +15,7 @@ namespace RWAnalog
     public partial class AddAxis : Window
     {
         int axisOffset;
-        TrainControl? internalControl = null;
+        TrainControl? internalControl;
         public TrainControl TrainControl { get; private set; }
         public InputGraph InputGraph { get; private set; }
 
@@ -26,7 +26,7 @@ namespace RWAnalog
         {
             InitializeComponent();
         }
-
+        
         protected override void OnSourceInitialized(EventArgs e)
         {
             base.OnSourceInitialized(e);
@@ -90,7 +90,7 @@ namespace RWAnalog
 
         private void bPickAxis_Click(object sender, RoutedEventArgs e)
         {
-            ChooseAxis chooseAxis = new ChooseAxis(App.Current.Properties["CurrentDevice"] as DeviceInstance);
+            ChooseAxis chooseAxis = new ChooseAxis(Application.Current.Properties["CurrentDevice"] as DeviceInstance);
             chooseAxis.ShowDialog();
 
             tboxAxisName.Text = chooseAxis.SelectedAxisName;
@@ -133,7 +133,7 @@ namespace RWAnalog
             if (connectedToTS)
                 currentControlId = internalControl.Value.ControllerId;
 
-            GeneralConfiguration configuration = (GeneralConfiguration)App.Current.Properties["Configuration"];
+            GeneralConfiguration configuration = (GeneralConfiguration)Application.Current.Properties["Configuration"];
             Guid deviceGuid = configuration.SelectedDevice;
             Thread inputThread = new Thread(() =>
             {
@@ -149,12 +149,12 @@ namespace RWAnalog
                     joystick.Poll();
                     var data = joystick.GetBufferedData();
 
-                    for (int i = 0; i < data.Length; i++)
+                    foreach (var t in data)
                     {
-                        if (data[i].RawOffset != axisOffset)
+                        if (t.RawOffset != axisOffset)
                             continue;
 
-                        controllerValue = data[i].Value;
+                        controllerValue = t.Value;
                         break;
                     }
 

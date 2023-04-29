@@ -1,8 +1,7 @@
-using RWAnalog.Classes;
+﻿using RWAnalog.Classes;
 using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Media;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -95,23 +94,20 @@ namespace RWAnalog
 
         InputManager inputManager;
         ConnectionManager connectionManager;
-        DirectInput directInput;
 
         public MainWindow()
         {
-            App.Current.Properties.Add("ConfigPath", AppDomain.CurrentDomain.BaseDirectory + @"\config.xml");
-
-            directInput = new DirectInput();
+            Application.Current.Properties.Add("ConfigPath", AppDomain.CurrentDomain.BaseDirectory + @"\config.xml");
 
             Setup setup = new Setup();
             if (!setup.Configured)
             {
                 setup.ShowDialog();
 
-                App.Current.Properties.Add("CurrentDevice", setup.SelectedDevice);
+                Application.Current.Properties.Add("CurrentDevice", setup.SelectedDevice);
             }
 
-            Guid controllerGuid = ((DeviceInstance)App.Current.Properties["CurrentDevice"]).ProductGuid;
+            Guid controllerGuid = ((DeviceInstance)Application.Current.Properties["CurrentDevice"]).ProductGuid;
             ConfigurationManager.GetSavedTrains();
 
             InitializeComponent();
@@ -214,9 +210,9 @@ namespace RWAnalog
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            string path = App.Current.Properties["ConfigPath"].ToString();
-            List<Train> savedTrains = (List<Train>)App.Current.Properties["SavedTrains"];
-            GeneralConfiguration configuration = (GeneralConfiguration)App.Current.Properties["Configuration"];
+            string path = Application.Current.Properties["ConfigPath"].ToString();
+            List<Train> savedTrains = (List<Train>)Application.Current.Properties["SavedTrains"];
+            GeneralConfiguration configuration = (GeneralConfiguration)Application.Current.Properties["Configuration"];
 
             SaveLoadManager.Save(path, savedTrains, configuration);
 
@@ -237,17 +233,6 @@ namespace RWAnalog
             trainConfiguration.ShowDialog();
             inputManager.StartThread();
             TrainSimulatorManager.ConnectToTrainSimulator();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            InputGraph graph = new InputGraph();
-            graph.Points.Add(new GraphPoint(5000, -1f));
-            GraphDialog graphDialog = new GraphDialog(graph);
-            graphDialog.Show();
-            graphDialog.Hide();
-            graphDialog.UpdateCanvas();
-            graphDialog.ShowDialog();
         }
     }
 }

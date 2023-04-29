@@ -1,20 +1,7 @@
 ﻿using SharpDX.DirectInput;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Markup;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Xml;
 using RWAnalog.Controls;
 
 namespace RWAnalog
@@ -25,7 +12,7 @@ namespace RWAnalog
     public partial class ChooseAxis : Window
     {
         public int SelectedIndex = -1;
-        public string SelectedAxisName = null;
+        public string SelectedAxisName;
         DirectInput directInput;
         //ListBoxItem axisListBoxItem = new ListBoxItem() { Content = new Grid(), HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Top, Height = 22, Margin = new Thickness(1) };
 
@@ -83,7 +70,7 @@ namespace RWAnalog
                     }
                     catch (Exception)
                     {
-                        continue;
+                        // ignored
                     }
                 }
                 System.Threading.Thread.Sleep(50);

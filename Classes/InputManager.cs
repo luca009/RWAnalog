@@ -1,10 +1,6 @@
 ﻿using SharpDX.DirectInput;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace RWAnalog.Classes
 {
@@ -13,7 +9,7 @@ namespace RWAnalog.Classes
         Train train;
         Thread thread;
         int pollWait;
-        bool threadRunning = false;
+        bool threadRunning;
         DirectInput directInput;
         Guid deviceGuid;
         Joystick joystick;

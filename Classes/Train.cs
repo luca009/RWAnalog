@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RWAnalog.Classes
 {
-    public class Train
+    public class Train : IEquatable<Train>
     {
         public string Provider { get; }
         public string Product { get; }
@@ -53,19 +48,27 @@ namespace RWAnalog.Classes
             return $"{Product} by {Provider}";
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object other)
         {
-            try
-            {
-                Train temp = obj as Train;
+            return Equals(other as Train);
+        }
+        
+        public bool Equals(Train other)
+        {
+            return other != null &&
+                   other.EngineName.Equals(EngineName) &&
+                   other.Provider.Equals(Provider) &&
+                   other.Product.Equals(Product);
+        }
 
-                return temp.EngineName.Equals(EngineName) &&
-                    temp.Provider.Equals(Provider) &&
-                    temp.Product.Equals(Product);
-            }
-            catch (Exception)
+        public override int GetHashCode()
+        {
+            unchecked
             {
-                return false;
+                var hashCode = (Provider != null ? Provider.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Product != null ? Product.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (EngineName != null ? EngineName.GetHashCode() : 0);
+                return hashCode;
             }
         }
     }

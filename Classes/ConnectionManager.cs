@@ -1,25 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using System.Windows;
 
 namespace RWAnalog.Classes
 {
     public class ConnectionManager
     {
         public delegate void ConnectionStatusChangedDelegate(ConnectionManager sender, bool connected);
+
         public event ConnectionStatusChangedDelegate ConnectionStatusChanged;
+
         public delegate void TrainChangedDelegate(ConnectionManager sender, Train train);
+
         public event TrainChangedDelegate TrainChanged;
 
         string previousTrain;
         bool previousConnected;
-        bool threadRunning = false;
+        bool threadRunning;
         int pollWait;
         Thread thread;
-        
+
 
         public ConnectionManager(int pollWait)
         {
@@ -40,7 +40,10 @@ namespace RWAnalog.Classes
                     if (!sameConnected)
                     {
                         if (ConnectionStatusChanged != null)
-                            App.Current.Dispatcher.Invoke(() => { ConnectionStatusChanged(this, TrainSimulatorManager.ConnectedToTrainSimulator()); });
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                ConnectionStatusChanged(this, TrainSimulatorManager.ConnectedToTrainSimulator());
+                            });
                         previousConnected = TrainSimulatorManager.ConnectedToTrainSimulator();
                         continue;
                     }
@@ -48,7 +51,10 @@ namespace RWAnalog.Classes
                     if (!sameTrain)
                     {
                         if (TrainChanged != null)
-                            App.Current.Dispatcher.Invoke(() => { TrainChanged(this, ConfigurationManager.GetCurrentTrainWithConfiguration()); });
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                TrainChanged(this, ConfigurationManager.GetCurrentTrainWithConfiguration());
+                            });
                         previousTrain = TrainSimulatorManager.QuickGetCurrentTrain();
                     }
                 }
@@ -83,17 +89,21 @@ namespace RWAnalog.Classes
                         if (!sameConnected)
                         {
                             if (ConnectionStatusChanged != null)
-                                App.Current.Dispatcher.Invoke(() => { ConnectionStatusChanged(this, TrainSimulatorManager.ConnectedToTrainSimulator()); });
+                                Application.Current.Dispatcher.Invoke(() =>
+                                {
+                                    ConnectionStatusChanged(this,
+                                        TrainSimulatorManager.ConnectedToTrainSimulator());
+                                });
                             previousConnected = TrainSimulatorManager.ConnectedToTrainSimulator();
                             continue;
                         }
 
-                        if (!sameTrain)
-                        {
-                            if (TrainChanged != null)
-                                App.Current.Dispatcher.Invoke(() => { TrainChanged(this, ConfigurationManager.GetCurrentTrainWithConfiguration()); });
-                            previousTrain = TrainSimulatorManager.QuickGetCurrentTrain();
-                        }
+                        if (TrainChanged != null)
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                TrainChanged(this, ConfigurationManager.GetCurrentTrainWithConfiguration());
+                            });
+                        previousTrain = TrainSimulatorManager.QuickGetCurrentTrain();
                     }
                 });
                 thread.Start();

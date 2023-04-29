@@ -1,18 +1,8 @@
 ﻿using RWAnalog.Classes;
 using RWAnalog.Controls;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace RWAnalog
 {
@@ -109,7 +99,7 @@ namespace RWAnalog
             if (cboxTrains.SelectedItem.GetType() != typeof(Train))
                 return;
 
-            Train currentTrain = ((MainWindow)App.Current.MainWindow).GetInputManagerTrain();
+            ((MainWindow)Application.Current.MainWindow).GetInputManagerTrain();
             List<Train> temp = cboxTrains.ItemsSource as List<Train>;
             for (int i = 0; i < temp.Count; i++)
             {
@@ -120,7 +110,7 @@ namespace RWAnalog
                 ConfigurationManager.SaveTrain(train);
 
                 if (train.ToSingleString() == TrainSimulatorManager.QuickGetCurrentTrain())
-                    ((MainWindow)App.Current.MainWindow).ChangeInputManagerTrain(train);
+                    ((MainWindow)Application.Current.MainWindow).ChangeInputManagerTrain(train);
             }
 
             DialogResult = true;

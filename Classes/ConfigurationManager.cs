@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 
 namespace RWAnalog.Classes
 {
@@ -10,26 +9,18 @@ namespace RWAnalog.Classes
     {
         public static Train GetCurrentTrain()
         {
-            string comparison = TrainSimulatorManager.QuickGetCurrentTrain();
-            foreach (Train train in GetSavedTrains())
-            {
-                if (train.ToSingleString() != comparison)
-                    continue;
-
-                return train;
-            }
-
-            return TrainSimulatorManager.GetCurrentTrain();
+            string currentTrainName = TrainSimulatorManager.QuickGetCurrentTrain();
+            return GetSavedTrains().Single(t => t.ToSingleString() == currentTrainName);
         }
 
         public static List<Train> GetSavedTrains()
         {
             List<Train> trains = new List<Train>();
 
-            if (!App.Current.Properties.Contains("SavedTrains"))
+            if (!Application.Current.Properties.Contains("SavedTrains"))
             {
-                trains = SaveLoadManager.LoadTrains(App.Current.Properties["ConfigPath"].ToString());
-                App.Current.Properties.Add("SavedTrains", trains);
+                trains = SaveLoadManager.LoadTrains(Application.Current.Properties["ConfigPath"].ToString());
+                Application.Current.Properties.Add("SavedTrains", trains);
             }
 
             if (!TrainSimulatorManager.ConnectedToTrainSimulator())
@@ -44,22 +35,14 @@ namespace RWAnalog.Classes
 
         public static void SaveTrain(Train train)
         {
-            if (!App.Current.Properties.Contains("SavedTrains"))
-                App.Current.Properties.Add("SavedTrains", new List<Train>());
+            List<Train> trains = (List<Train>)Application.Current.Properties["SavedTrains"];
 
-            List<Train> trains = (List<Train>)App.Current.Properties["SavedTrains"];
-
-            if (trains.Contains(train))
-            {
-                int index = trains.IndexOf(train);
-                trains[index] = train;
-            }
-            else
+            if (!trains.Contains(train))
             {
                 trains.Add(train);
             }
 
-            App.Current.Properties["SavedTrains"] = trains;
+            Application.Current.Properties["SavedTrains"] = trains;
         }
 
         public static Train GetCurrentTrainWithConfiguration()
@@ -67,34 +50,32 @@ namespace RWAnalog.Classes
             Train train = TrainSimulatorManager.GetCurrentTrain();
             if (train == null)
                 return null;
-            if (((List<Train>)App.Current.Properties["SavedTrains"]) == null)
+            if (((List<Train>)Application.Current.Properties["SavedTrains"]) == null)
                 return train;
 
             Train newTrain = train;
             try
             {
-                newTrain = ((List<Train>)App.Current.Properties["SavedTrains"]).First((x) => { return x.ToString() == train.ToString(); });
+                newTrain = ((List<Train>)Application.Current.Properties["SavedTrains"]).First((x) =>
+                {
+                    return x.ToString() == train.ToString();
+                });
             }
-            catch (Exception) { } //ignore if it can't find the train saved
+            catch (Exception)
+            {
+                //ignore if it can't find the train saved
+            }
+
             return newTrain;
         }
 
         public static bool IsCurrentTrainNew()
         {
             Train train = TrainSimulatorManager.GetCurrentTrain();
-            if (train == null || ((List<Train>)App.Current.Properties["SavedTrains"]) == null)
+            if (train == null || ((List<Train>)Application.Current.Properties["SavedTrains"]) == null)
                 return true;
 
-            try
-            {
-                ((List<Train>)App.Current.Properties["SavedTrains"]).First((x) => { return x.ToString() == train.ToString(); });
-            }
-            catch (Exception)
-            {
-                return true;
-            }
-
-            return false;
+            return !((List<Train>)Application.Current.Properties["SavedTrains"]).Contains(train);
         }
     }
 }

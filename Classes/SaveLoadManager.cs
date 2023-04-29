@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace RWAnalog.Classes
@@ -99,11 +96,7 @@ namespace RWAnalog.Classes
                             case "SelectedDevice":
                                 configuration.SelectedDevice = Guid.Parse(xmlReader.Value);
                                 break;
-                            default:
-                                break;
                         }
-                        break;
-                    default:
                         break;
                 }
             }
@@ -158,8 +151,6 @@ namespace RWAnalog.Classes
                                 float y = float.Parse(xmlReader.GetAttribute("y"));
                                 currentGraph.Points.Add(new GraphPoint(x, y));
                                 break;
-                            default:
-                                break;
                         }
                         break;
                     case XmlNodeType.EndElement:
@@ -179,11 +170,7 @@ namespace RWAnalog.Classes
                             case "Graph":
                                 currentTrainControl.OverrideInputGraph = currentGraph;
                                 break;
-                            default:
-                                break;
                         }
-                        break;
-                    default:
                         break;
                 }
             }

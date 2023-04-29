@@ -1,19 +1,8 @@
-﻿using Microsoft.Win32;
-using SharpDX.DirectInput;
-using System;
+﻿using SharpDX.DirectInput;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Ookii.Dialogs.Wpf;
 using RWAnalog.Classes;
 using Path = System.IO.Path;
@@ -25,19 +14,17 @@ namespace RWAnalog
     /// </summary>
     public partial class Setup : Window
     {
-        public bool Configured = false;
-        public int SelectedIndex = 0;
+        public bool Configured;
+        public int SelectedIndex;
         public DeviceInstance SelectedDevice;
         DirectInput directInput;
         List<DeviceInstance> controllers = new List<DeviceInstance>();
-        int throttleAxisOffset = -1;
-        int brakeAxisOffset = -1;
 
         public Setup()
         {
             directInput = new DirectInput();
 
-            GeneralConfiguration? configuration = SaveLoadManager.LoadConfiguration(App.Current.Properties["ConfigPath"].ToString());
+            GeneralConfiguration? configuration = SaveLoadManager.LoadConfiguration(Application.Current.Properties["ConfigPath"].ToString());
             if (configuration != null && File.Exists(Path.Combine(configuration.Value.PluginsPath, "RailDriver64.dll")))
             {
                 Directory.SetCurrentDirectory(configuration.Value.PluginsPath);
@@ -48,8 +35,8 @@ namespace RWAnalog
                 {
                     if (deviceInstance.ProductGuid == configuration.Value.SelectedDevice)
                     {
-                        App.Current.Properties.Add("CurrentDevice", deviceInstance);
-                        App.Current.Properties.Add("Configuration", configuration);
+                        Application.Current.Properties.Add("CurrentDevice", deviceInstance);
+                        Application.Current.Properties.Add("Configuration", configuration);
                         Configured = true;
                         return;
                     }
@@ -58,22 +45,6 @@ namespace RWAnalog
 
             InitializeComponent();
             ScanDevices();
-        }
-
-        private void bChangeThrottleAxis_Click(object sender, RoutedEventArgs e)
-        {
-            ChooseAxis chooseAxis = new ChooseAxis(controllers[SelectedIndex]);
-            chooseAxis.ShowDialog();
-
-            throttleAxisOffset = chooseAxis.SelectedIndex;
-        }
-
-        private void bChangeBrakeAxis_Click(object sender, RoutedEventArgs e)
-        {
-            ChooseAxis chooseAxis = new ChooseAxis(controllers[SelectedIndex]);
-            chooseAxis.ShowDialog();
-
-            brakeAxisOffset = chooseAxis.SelectedIndex;
         }
 
         private void listboxDevices_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -101,7 +72,7 @@ namespace RWAnalog
             foreach (var deviceInstance in devices)
             {
                 // Add each found Device to setups ListBox and to Controllers
-                listboxDevices.Items.Add(deviceInstance.ProductName.ToString());
+                listboxDevices.Items.Add(deviceInstance.ProductName);
                 controllers.Add(deviceInstance);
             }
         }
@@ -137,7 +108,7 @@ namespace RWAnalog
             GeneralConfiguration configuration = new GeneralConfiguration();
             configuration.PluginsPath = tboxRaildriverPath.Text;
             configuration.SelectedDevice = SelectedDevice.ProductGuid;
-            App.Current.Properties.Add("Configuration", configuration);
+            Application.Current.Properties.Add("Configuration", configuration);
 
             this.DialogResult = true;
         }

@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace RWAnalog.Classes
 {
@@ -66,7 +63,7 @@ namespace RWAnalog.Classes
             {
                 for (int smallWait = 0; smallWait < 5; smallWait++)
                 {
-                    if (GetRailSimConnected() == true)
+                    if (GetRailSimConnected())
                         return true;
 
                     SetRailDriverConnected(true);
