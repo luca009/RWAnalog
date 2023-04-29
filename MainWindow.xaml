@@ -18,7 +18,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock x:Name="textConnectionStatus" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Disconnected from Train Simulator" VerticalAlignment="Center" FontSize="16" Foreground="White" Grid.ColumnSpan="1"/>
-                <Button x:Name="bConnect" Content="Connect" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Grid.Column="1" Width="80" Click="bConnect_Click"/>
+                <Button x:Name="bConnect" Content="Connect (Ctl+Shift+F12)" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Grid.Column="1" Width="140" Click="bConnect_Click"/>
             </Grid>
         </Grid>
         <Grid Grid.Row="1" Background="#FFE2E2E2">
@@ -27,7 +27,7 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock x:Name="textCurrentTrain" HorizontalAlignment="Center" Margin="5,5,5,5" Grid.Row="1" TextWrapping="Wrap" Text="no train" VerticalAlignment="Center" FontSize="16"/>
+                <TextBlock x:Name="textCurrentTrain" HorizontalAlignment="Center" Margin="5,5,5,5" Grid.Row="0" TextWrapping="Wrap" Text="no train" VerticalAlignment="Center" FontSize="16"/>
                 <Button x:Name="bConfigure" Content="Configuration" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Grid.Column="1" Width="80" Click="bConfigure_Click" Visibility="Collapsed"/>
             </Grid>
         </Grid>

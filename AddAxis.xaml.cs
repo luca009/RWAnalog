@@ -1,19 +1,11 @@
-﻿using RWAnalog.Classes;
+using RWAnalog.Classes;
 using SharpDX.DirectInput;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.Windows.Interop;
 
 namespace RWAnalog
 {
@@ -27,9 +19,30 @@ namespace RWAnalog
         public TrainControl TrainControl { get; private set; }
         public InputGraph InputGraph { get; private set; }
 
+        [DllImport("user32.dll")]
+        private static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vlc);
+        
         public AddAxis()
         {
             InitializeComponent();
+        }
+
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+            RegisterHotKey(new WindowInteropHelper(this).Handle, 2, 6,
+                122); // Register hotkey Ctl + Shift + F11 to detect axis (2 = Hotkey ID, 6 = Ctl + Shift, 122 = F11) 
+            (PresentationSource.FromVisual(this) as HwndSource)?.AddHook(WndProc); // Register WndProc, to catch hotkey
+        }
+
+        private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            if (msg == 0x0312 && wParam.ToInt32() == 2) // If msg = Hotkey and Hotkey ID = 2 (The one we registered)
+            {
+                DetectAxis(); // Detect axis
+            }
+
+            return IntPtr.Zero;
         }
 
         public bool? ShowEditDialog(TrainControl control)
@@ -54,12 +67,17 @@ namespace RWAnalog
             DialogResult = true;
         }
 
-        private async void bDetectControl_Click(object sender, RoutedEventArgs e)
+        private async void DetectAxis()
         {
-            bDetectControl.Content = "...";
+            bDetectControl.Content = "Detecting...";
             await Task.Run(() => { internalControl = TrainSimulatorManager.GetMovingControl(0.25f); });
-            tboxControlName.Text = internalControl.Value.Name;
-            bDetectControl.Content = "Detect";
+            tboxControlName.Text = internalControl?.Name ?? string.Empty;
+            bDetectControl.Content = "Detect (Ctl+Shift+F11)";
+        }
+
+        private void bDetectControl_Click(object sender, RoutedEventArgs e)
+        {
+            DetectAxis();
         }
 
         private void bPickControl_Click(object sender, RoutedEventArgs e)
