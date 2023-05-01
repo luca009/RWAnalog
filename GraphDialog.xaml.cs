@@ -9,12 +9,13 @@ namespace RWAnalog
     /// </summary>
     public partial class GraphDialog : Window
     {
-        public List<GraphPoint> Points = new List<GraphPoint>();
+        public List<GraphPoint> Points { get; set; }
         public double Minimum { get { return graphEditor.Minimum;  } set { graphEditor.Minimum = value;} }
         public double Maximum { get { return graphEditor.Maximum;  } set { graphEditor.Maximum = value;} }
 
         public GraphDialog()
         {
+            Points = new List<GraphPoint>();
             InitializeComponent();
         }
         public GraphDialog(InputGraph graph)

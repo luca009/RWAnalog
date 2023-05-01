@@ -31,7 +31,7 @@ namespace RWAnalog
         {
             base.OnSourceInitialized(e);
             RegisterHotKey(new WindowInteropHelper(this).Handle, 2, 6,
-                122); // Register hotkey Ctl + Shift + F11 to detect axis (2 = Hotkey ID, 6 = Ctl + Shift, 122 = F11) 
+                122); // Register hotkey Ctrl + Shift + F11 to detect axis (2 = Hotkey ID, 6 = Ctrl + Shift, 122 = F11) 
             (PresentationSource.FromVisual(this) as HwndSource)?.AddHook(WndProc); // Register WndProc, to catch hotkey
         }
 
@@ -72,7 +72,7 @@ namespace RWAnalog
             bDetectControl.Content = "Detecting...";
             await Task.Run(() => { internalControl = TrainSimulatorManager.GetMovingControl(0.25f); });
             tboxControlName.Text = internalControl?.Name ?? string.Empty;
-            bDetectControl.Content = "Detect (Ctl+Shift+F11)";
+            bDetectControl.Content = "Detect (Ctrl+Shift+F11)";
         }
 
         private void bDetectControl_Click(object sender, RoutedEventArgs e)

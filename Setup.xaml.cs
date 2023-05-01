@@ -14,9 +14,9 @@ namespace RWAnalog
     /// </summary>
     public partial class Setup : Window
     {
-        public bool Configured;
-        public int SelectedIndex;
-        public DeviceInstance SelectedDevice;
+        public bool Configured { get; private set; }
+        public int SelectedIndex { get; private set; }
+        public DeviceInstance SelectedDevice { get; private set; }
         DirectInput directInput;
         List<DeviceInstance> controllers = new List<DeviceInstance>();
 

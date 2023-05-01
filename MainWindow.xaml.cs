@@ -31,7 +31,7 @@ namespace RWAnalog
                         textConnectionStatus.Text = "Could not connect";
                         textCurrentTrain.Text = "no train";
                         bConnect.Visibility = Visibility.Visible;
-                        bConnect.Content = "Try again (Ctl+Shift+F12)";
+                        bConnect.Content = "Try again (Ctrl+Shift+F12)";
                         bConfigure.Visibility = Visibility.Collapsed;
                         stream = Application.GetResourceStream(
                             new Uri("pack://application:,,,/RWAnalog;component/Resources/connection_lost.wav"));
@@ -41,7 +41,7 @@ namespace RWAnalog
                         textConnectionStatus.Text = "Disconnected from Train Simulator";
                         textCurrentTrain.Text = "no train";
                         bConnect.Visibility = Visibility.Visible;
-                        bConnect.Content = "Connect (Ctl+Shift+F12)";
+                        bConnect.Content = "Connect (Ctrl+Shift+F12)";
                         bConfigure.Visibility = Visibility.Collapsed;
                         break;
                     case ConnectionStatus.Connecting:
@@ -123,7 +123,7 @@ namespace RWAnalog
         {
             base.OnSourceInitialized(e);
             RegisterHotKey(new WindowInteropHelper(this).Handle, 1, 6,
-                123); // Register hotkey Ctl + Shift + F12 to connect to Train Sim (1 = Hotkey ID, 6 = Ctl + Shift, 123 = F12) 
+                123); // Register hotkey Ctrl + Shift + F12 to connect to Train Sim (1 = Hotkey ID, 6 = Ctrl + Shift, 123 = F12) 
             (PresentationSource.FromVisual(this) as HwndSource)?.AddHook(WndProc); // Register WndProc, to catch hotkey
         }
 

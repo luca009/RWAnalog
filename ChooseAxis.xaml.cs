@@ -11,13 +11,14 @@ namespace RWAnalog
     /// </summary>
     public partial class ChooseAxis : Window
     {
-        public int SelectedIndex = -1;
-        public string SelectedAxisName;
+        public int SelectedIndex { get; private set; }
+        public string SelectedAxisName { get; private set; }
         DirectInput directInput;
         //ListBoxItem axisListBoxItem = new ListBoxItem() { Content = new Grid(), HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Top, Height = 22, Margin = new Thickness(1) };
 
         public ChooseAxis(DeviceInstance selectedDevice)
         {
+            SelectedIndex = -1;
             AsyncSetup(selectedDevice);
         }
 
