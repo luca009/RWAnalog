@@ -18,7 +18,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock x:Name="textConnectionStatus" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Disconnected from Train Simulator" VerticalAlignment="Center" FontSize="16" Foreground="White" Grid.ColumnSpan="1"/>
-                <Button x:Name="bConnect" Content="Connect (Ctl+Shift+F12)" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Grid.Column="1" Width="140" Click="bConnect_Click"/>
+                <Button x:Name="bConnect" Content="Connect (Ctrl+Shift+F12)" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Grid.Column="1" Width="140" Click="bConnect_Click"/>
             </Grid>
         </Grid>
         <Grid Grid.Row="1" Background="#FFE2E2E2">
